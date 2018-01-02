@@ -7,13 +7,4 @@ nana를 사용해서 도구들을 만들어 본다.
 
 ## 연습
 
-hierarchical csv
-   - , as a main separator
-   - : as a second separator
-   - type specified
-   - excel plugin to expand second separation
-
-하위 과제:
- - 다국어 문자열 필드 처리  
-   - std::string에서 std::wstring 변환
-   - strtk 참고 : http://www.partow.net/programming/strtk/
+UI는 예뻐야 한다.
