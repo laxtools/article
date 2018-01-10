@@ -18,3 +18,17 @@ hcsv['row']['column']['subcolumn'] 으로 접근 가능하다.
 - C++ 코드 생성 (로딩과 사용, 저장)
 - 엑셀에서 로딩과 저장
 - DB 테이블 생성과 import, db에서 로딩
+
+
+## library 
+
+https://haptork.github.io/easyLambda/
+
+훨씬 크지만 참고할 수 있는 훌륭한 구현으로 보인다. 
+개념들을 익히고 게임의 개념들을 추가하고 통합해서 
+멋진 틀로 만들도록 한다. 
+
+
+
+
+
