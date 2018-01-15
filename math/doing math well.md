@@ -14,7 +14,7 @@
 
 ## Definition and Properties
 
- - understand definitions (concpets) by intuition
+ - understand definitions (concepts) by intuition
    - example: inf / sup
      - number from a ordered field
      - order! --> position
@@ -24,7 +24,7 @@
    - example: field
      - it is like numbers we know
      - has 4 basic operations w/ addition, substraction, multiplication, division
-     - we know that addition / substraction and multiplication / divions are pairs of a group
+     - we know that addition / substraction and multiplication / divions are operations of a group
      - and there is a relation w/ distributive law for addition and multiplication
 
    - concept can define objects and operations.
@@ -43,4 +43,4 @@
 이 과정이 가장 중요하다. 직관을 형성하려면 뇌를 훈련시켜서 "아하"라고
 깨닫는 과정이 필요하다.
 
-       
+
