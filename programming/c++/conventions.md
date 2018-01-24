@@ -26,8 +26,9 @@
  - use fluent style when proper
  - use declarative style when possible
  - use operators to provide convenience
- - use std::* if it exists 
+ - use std::_*_ if it exists 
    - use stl for containers 
+   - use algorithms,  use std::to_string, and etc.
  - use lambda instead of bind / functor
  - use using instead of typedef
  - use auto when possible 
@@ -40,5 +41,14 @@
    - do functional test as unit test if possible
  - do review code 
  - do review design 
+
+## practice conventions 
+
+ - write unit test for all classes, especially for library classes. 
+   - aim for 100 % code coverage, especially for library classes. 
+ - write function test for game
+   - aim 100% code coverage for important classes and for all classes as much as possible
+ - make design simple 
+ - make code look simple and easy to read 
 
 

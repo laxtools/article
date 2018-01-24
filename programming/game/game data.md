@@ -28,7 +28,15 @@ https://haptork.github.io/easyLambda/
 개념들을 익히고 게임의 개념들을 추가하고 통합해서 
 멋진 틀로 만들도록 한다. 
 
+## excel 
 
+https://github.com/tfussell/xlnt
 
+excel 포맷이 공개되었다고 들었는데 좋은 라이브러리들이 많이 나왔다. 
+C++에서도 많은 라이브러리들이 나오고 있다. 
+
+hcsv 대신 excel을 DB로 하는 도구를 만들 수 있고 이 쪽 방향으로 진행해도 좋아 보인다. 
+
+스키마 정의와 변환 / 통합 기능이 있어야 한다. 
 
 
