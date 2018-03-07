@@ -55,6 +55,18 @@ Q4. find proper game design under limitations of sync algorithms.
 스케치가 필요하다. 기존 게임들에서 사용한 동기화 방식을 기초로 
 아이디어를 더하고 비틀면서 살펴본다. 
 
+시스템 A 상에서 시간 t에 발생한 이벤트, $e_t$, 가 시스템 B로 전파된다. 이는 일정한 지연을 갖고 도착한다. 
+
+$e_{t+delay}$ 를 적용할 경우 이미 $delay$ 시간 만큼 두 시스템 간의 상태 차이가 발생한다.  RTS에서 사용하는 방식은 일정 시간 이벤트를 모아서 한번에 동시에 처리하는 방식이다. 
+
+
+
+
+
+
+
+
+
 
 ## extension to n-body 
 

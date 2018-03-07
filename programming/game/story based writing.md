@@ -138,41 +138,159 @@ Mission, quest 등에 잘 맞는 구조이다. 외부와 일반적인 인터페�
 
 
 
-## 게임 서버의 문체 
-
-on: 
-
-   when: 
-
-​     do : 
-
-   else: 
-
-​     do: 
+# 게임 서버의 문체 
 
 
+
+## 스토리 기반 흐름 
 
 - on 
-- when 
-- do 
+- scenario
+- given
+- when
+- do
+- then 
 
 ### on
 
+메세지와 시간으로 시작된다. 문맥을 정리할 때 필요하다. 특정 함수에서 시작할 경우 on은 특별한 의미를 갖지는 않지만 시작한 문맥을 이해해야 하는 경우도 있다. 
 
+on의 하위 언어는 서버에서 message와 시간이다. 
+
+### scenario
+
+시나리오는 함수의 조건에 따른 분기를 나타낸다. given 에서 주어진 조건에 따라 
+
+### given 
+
+given은 조건에 해당한다. 조건은 상태이다. 상태 중 필터링 해서 예외로 처리되는 것들이 있다. 이들을 filter라고 하자. filter는 에러 체크를 포함한다. 
+
+given은 if 문의 형태를 띄지만 나뉜다. 
+
+- 조건에 해당하는 경우
+- filter에 해당하는 경우
+- do에 해당하는 경우
+
+filter는 별도의 매크로로 DSL을 만드는 것이 좋다. return_if() 나 verify()와 같은 매크로를 추가하여 함수의 처리 조건을 만족하지 않는 경우를 나누어 이후 논리 전개를 단순하게 만든다. 
 
 ### when 
 
-
+when은 함수 호출의 내용에 대한 설명이다. when은 if 문으로 나눠서 처리되는 경우가 대부분이다. 
 
 ### do 
 
+행위 자체이다. 함수 구현이다. 
+
+### then 
+
+then은 ensure와 같이 post condition에 해당한다. do를 하고 난 후에 만족해야 하는 조건이다. do의 결과로서 상태를 만족해야 하는 조건이다. 
+
+### 개념 수준  
+
+모든 서술은 특정 개념의 수준에 따른다. 흐름, 알고리즘, 함수 내 처리에서 의미가 부여된다. 개념 수준을 정하고 그에 따른 타잎을 갖추며 함수를 통해 의미를 만들고 시나리오를 적용해야 한다. 
+
+#### 예시.  GetRewardFromVolume(volumeIndex, rewardType, rewardValue) 
+
+Story: RPG에서 맵에 설치된 특정 볼륨에서 보상을 해당 볼륨 안에 있는 플레이어들에게 제공한다. 
+
+On: 
+
+ 특정 사용자가 퀘스트 완료나 미션 완료를 했을 때 
+
+Scenario : 
+
+ 볼륨 안에 플레이어가 있을 경우 타잎별 보상을 제공한다. 
+
+ 시나리오에 맞는 코드를 작성한다. 
+
+```c++
+// 볼륨 안에 있는 플레이어에 대해 
+GetPlayersInVolume( ..., players); 
+
+// 타잎별 보상을 제공한다. 
+switch ( rewardType )
+{
+	case RewardType::QuestCompletion: 
+    	{
+               std::for_each( players, 
+                             [rewardValue] ( auto player ) 
+                             { RewardQuestCompletion(player, rewardValue); } 
+                            );
+               break;
+        }
+    case RewardType::... : 
+    	{
+               ...
+        }
+        break;
+    default: 
+        // error log 
+    	break; 
+   }
+}
+```
+
+하위 시나리오인 RewardQuestCompletion()은 다음과 같이 구현된다. 
+
+```c++
+RewardQuestCompletion( EntityPlayer* player, questId ) 
+{
+    // Given : 진행 중인 questId의 퀘스트가 있다면 
+    player->GetActionQuest().CompleteQuest( questId );
+    // Then : questId의 퀘스트가 완료됨
+}
+```
+
+코드가 짧으니 람다에 모두 구현해도 된다. 
+
+```c++
+std::for_each( 
+    players, 
+	[rewardValue] ( auto player ) { player->GetActionQuest().CompleteQuest( rewardValue ); }
+);
+```
+
+이와 같이 분리하고 Scenario (목표), Given (조건), When (요청), Then (결과) 로 나누어 생각하면 흐름이 명확해진다. 
+
+위의 시나리오 구현 구조는 개별 플레이어에게 먼저 전달된 후 Component로 전달되게 하면 EntityPlayer가 매우 뚱뚱해진다 (엄청나게 많은 함수가 추가됨).  따라서, 적절한 균형점이 필요한데 컴포넌트를 얻는 방식은 괜찮아 보인다. 
+
+### 개념 수준의 분류
+
+- on의 절차적 시나리오 
+
+  - 메세지와 조건을 검증하고 분기 하는 함수
+
+- 대상의 개수 
+
+  - 여러 개 또는 단일
+
+  ​
+
+다른 차원의 분류가 가능하며 서버 분리된 (orthogonal) 개념들의 차원을 정리하는 노력을 지속한다. 
+
+
+
+## 비동기 처리 
+
+별도로 논의되어야 할 항목이나 문체와 관련 있기에 여기에 둔다. 
+
+
+
+## 타잎 
+
+개념을 갖고 있는 타잎들을 통해 구성되도록 설계하고 코딩하는 것이 중요하다. 타잎은 상태와 동작을 갖고 있는데 동작 자체가 하나의 개념이나 동작 만을 많아 처리하도록 하고 상위 동작은 이런 하위 동작들로 구성해야 검증 가능하고 이해하기 쉬운 코드가 나온다. 
+
+BDD 스타일의 의도와 결과에 기반한 흐름이 타잎과 타잎들의 동작으로 구성되도록 해야 한다. 개념화는 모든 곳에서 가능하고 필요하다. 
+
+### 대수적 구현 
+
+명확한 구현을 위해 대수적인 구조를 만드는 노력을 해야 한다. 대수적 시스템이란 더하기, 빼기와 같이 하나의 연산처럼 동작하는 구조를 만든다는 뜻이다. 대상 개념의 수준을 올리면 자연스럽게 복잡한 동작도 가능하게 되도록 해야 한다. 
+
+이 부분은 중요한 연구 과제로 보인다. 
 
 
 
 
-## 정리 
-
-시작할 때 약간 거창한 포부가 있었는데 적다 보니 많이 작아졌다.  그래도 약간은 의미가 있어 보인다. 데이터로 흐름을 구성하고 이를 실행하는 방식의 BDD 스타일의 스토리 기반 개발은 계속 살펴볼 가치가 있으므로 상태나 행동, callback의 구성을 통해 진행될 수 있는 지 기회가 될 때 더 살펴본다. 
 
 
 
