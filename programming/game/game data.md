@@ -8,9 +8,10 @@ hcsv['row']['column']['subcolumn'] 으로 접근 가능하다.
 의존 관계에 따라 파일 로딩 순서를 결정할 수 있다.
 
 타잎:
- - 문자열
- - 숫자 (float, int8, int16, int32, int64, unsigned, float, double)
- - enum / keys
+ - 문자열 (std::string, utf8)
+ - 숫자 (int8, int16, int32, int64, unsigned types, float, double)
+ - enum 
+ - pair 
 
 ## 기능
 
@@ -38,5 +39,85 @@ C++에서도 많은 라이브러리들이 나오고 있다.
 hcsv 대신 excel을 DB로 하는 도구를 만들 수 있고 이 쪽 방향으로 진행해도 좋아 보인다. 
 
 스키마 정의와 변환 / 통합 기능이 있어야 한다. 
+
+## 확장 
+
+데이터 언어일 뿐만 아니라 메세지 정의 언어로 동작할 수 있다.  json으로 정의하면 IDL 파서를 만들 필요가 없다. json으로 구성해서 코드 생성을 하는 구조로 만들 수 있다. 
+
+### 스키마 
+
+```json
+{
+
+ include: [ file1, file2, ... ], 
+
+ namespace: game, 
+
+  enum : {
+
+    fields : [ ]
+
+   } , 
+
+  struct : { 
+
+    name: position, 
+
+    fields: []
+
+   }, 
+
+   message : {
+
+    name: req_move,
+
+    topic:  game.req_move, 
+
+    fields: {  position: pos, int32: id, ...   }  
+
+ }
+
+}
+
+```
+
+
+
+### csv 
+
+```javascript
+{
+
+  table: { 
+
+    name: skill, 
+
+    fields : { int32 : index, float32: range, category: kind }
+  }
+
+ enum : { 
+
+   name: category, 
+
+   fields : [
+
+      ....
+
+   ]
+
+  }
+
+}
+
+```
+
+
+
+
+
+## 정리 
+
+간단한 아이디어 확장으로 게임 데이터, 메세지, DB 스키마를 포괄하는 구조를 확보했다. 키 값을 추가하고 기능을 만들면 자동으로 전체 기능이 확장된다. 이와 같이 의미를 갖는 스키마와 코드 생성은 개발 효율을 올리는데 매우 중요하다. 
+
 
 
