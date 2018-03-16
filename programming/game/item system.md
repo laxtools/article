@@ -31,7 +31,7 @@
  - 버리기와 소멸
  - 강화와 속성 변경
  - 소켓 장착과 속성 변경
-  가치 함수
+    가치 함수
  - value(item) --> R+
  - 각 아이템 인스턴스의 가치를 매기는 함수
  - 아이템 속성에 대한 함수 (결국, R^n에서 R^+로의 함수)
@@ -64,6 +64,87 @@
 중심으로 살펴본다.
 
 인벤토리는 길드, 캐릭터, 계정, 우편함 등 다양한 타잎으로 나눠서 처리한다.
+
+
+
+### 작은 차이의 처리 
+
+인벤토리마다 동작이 달라지는 것들이 있다. 이럴 경우 클래스를 분리하거나 함수를 분리하거나 if 문으로 나누어 처리한다. if 문으로 처리하게 되면 코드가 복잡해지고 실수가 잦아질 수 있다. 클래스를 분리하는 경우 클래스 종류가 많고 코드를 따라가기가 어려워질 수 있다. 이 중간에 함수를 사용하는 방식이 있다. 
+
+C++에서 다형성은 컴파일 시 타잎 기반, constexpr을 사용하여 컴파일 시와 실행 시 모두 적용하는 방법, 타잎 정보에 기초하여 실행 시 함수를 선택하는 방법, 클래스를 분리하여 다형성을 이용하는 방법이 있다. 각 방법의 장단점이 있다. 
+
+요청을 받아 조절하는 함수에서 인벤토리를 타잎별로 찾아서 처리하고 개별 인벤토리 타잎에 세부 구현을 갖는 방식이 중요해 보인다. 클래스 계층이 없으면 코드가 너무 복잡해지고 하는 일이 많아진다. 
+
+- InvenComp
+
+  - 인벤토리 관련 이벤트의 처리 함수들 담당
+- Inven
+
+  - Default
+  - PlatinumInven
+  - EquipInven
+  - RebuyInven 
+  - MailInven 
+  - ExchangeInven 
+  - QuestInven 
+  - StorageInven
+  - CashInven
+  - KnightageInven
+  - MakingInven
+- Slot 
+
+  - 인벤토리를 슬롯으로 구성된다. 
+  - Slot의 특성은 구성되며 하위 클래스를 갖는다. 
+- Item 
+  - 하위클래스? 
+- ItemBag 
+  - 동적인 아이템 정보 이동용 아이템 가방 
+
+
+
+위 정도를 기본 타잎으로 갖추고 다형성을 결정한다. 
+
+```c++
+ErrorCode InvenComp::GetMakingMaterials(IndexItem item, std::size_t count, ItemList& items)
+{
+    // Story: MakingInven에 대해 item에 해당하는 아이템 목록을 count 만큼 가져온다.     
+    RETURN_IF(count == 0, ErrorCode::ItemInvalidMakingRequestCount); 
+    RETURN_IF(!IsValidItemIndex(item), ErrorCode::ItemInvalidItemIndex); 
+       
+    // Given: 재질 아이템이 제작 인벤에 count 만큼 있을 경우 
+    // Do: 제작 인벤들에서 해당 아이템들을 count만큼 찾아서 items에 넣는다. 
+    // Then: items에 count 개수 만큼 아이템이 들어 있다. 
+    
+    int required = count; // req
+    
+    // Do의 구현 : 
+    // - 각 제작 인벤에 대해 
+    for ( auto& inven : GetMakingInvenIterator() )
+    {
+    	// - 제작 재료를 필요한 만큼 가져온다. 
+    	required -= inven->FindItemsRequired( item, required, items );     
+    	// - 해당 재료는 items에 넣는다.
+        
+        if ( required <= 0 ) // 다 채웠으면 완료
+        {
+            return ErrorCode::Success; 
+		}
+    }
+    
+    return ErrorCode::ItemInsufficientMakingItems;
+}
+```
+
+GetMakingInvenIterator()는 shared_ptr 형태로 관리되는 inven 포인터들에 대해 vector로 갖고 있도록 구현하면 쉽게 구현할 수 있다. 
+
+FindItemsRequired() 함수는 Inven의 기본 기능으로 구현할 수 있다. 
+
+Inven이 클래스가 아니고 컴포넌트에서만 처리할 경우 재사용 가능한 함수가 누적되지 않는다. 컴포넌트는 인벤토리들을 대상으로 동작하기 때문에 개별 인벤토리 처리 함수를 넣으면 함수 개수가 많아져서 부담이 생기기 때문에 서술형으로 쭉 적는 경향이 생긴다. 
+
+Item은 돌아다니기 때문에 shared_ptr로 관리해야 한다. inven은 검색이나 모으기를 위해 shared_ptr로 관리되는 것이 좋다. GetMakingInvenIterator() 구현이나 여러 개의 인벤을 만들기 위해 필요하다. 
+
+
+
 
 ## 트랜잭션
 
