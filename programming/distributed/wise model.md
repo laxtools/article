@@ -133,8 +133,9 @@ Read chapter 1, chapter 2, chapter 4. Then, decide to read more or not.
 
 
 
-- prefix 
-  - ​
+채널이 나와야 전체를 이해할 수 있을 듯 하다. 지금은 이벤트(알파벳)과 프로세스, recursion, choice 까지 진행했다. mutual recursion도 나온다. 이런 식으로 모델을 쌓아가는 수학적인 접근은 좋다. 처음 개발할 때는 오가면서 했을 것이다. 
+
+
 
 
 
