@@ -12,6 +12,12 @@
  There is no royal road in mathematics.
  There is no royal road in programming.
 
+- do it anyway 
+- lower expectation, and enjoy
+- make it everywhere 
+
+
+
 ## Definition and Properties
 
  - understand definitions (concepts) by intuition
