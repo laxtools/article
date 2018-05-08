@@ -224,3 +224,7 @@ TSWLatexianTemp*
 /programming/gfx/play/tutorial/.vs/tutorial/v15/*.db
 /programming/gfx/play/tutorial/Debug
 /programming/gfx/play/tutorial/Release
+/programming/compiler/lecture/계산기/Debug/*.ilk
+/programming/compiler/lecture/계산기/Debug/*.pdb
+/programming/compiler/lecture/계산기/Debug
+/programming/compiler/lecture/계산기/.vs/example02/v14/*.suo

@@ -1,0 +1,346 @@
+Grammar
+
+    0 $accept: parsetree $end
+
+    1 parsetree: lines
+
+    2 lines: lines line
+    3      | line
+
+    4 line: PRINT expression SEMICOLON
+    5     | QUIT SEMICOLON
+    6     | VARIABLE EQUALS expression SEMICOLON
+
+    7 expression: expression PLUS inner1
+    8           | expression MINUS inner1
+    9           | inner1
+
+   10 inner1: inner1 ASTERISK inner2
+   11       | inner1 FSLASH inner2
+   12       | inner2
+
+   13 inner2: VARIABLE
+   14       | NUMBER
+   15       | LPAREN expression RPAREN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+PLUS (258) 7
+MINUS (259) 8
+ASTERISK (260) 10
+FSLASH (261) 11
+EQUALS (262) 6
+PRINT (263) 4
+LPAREN (264) 15
+RPAREN (265) 15
+SEMICOLON (266) 4 5 6
+QUIT (267) 5
+VARIABLE (268) 6 13
+NUMBER (269) 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (15)
+    on left: 0
+parsetree (16)
+    on left: 1, on right: 0
+lines (17)
+    on left: 2 3, on right: 1 2
+line (18)
+    on left: 4 5 6, on right: 2 3
+expression (19)
+    on left: 7 8 9, on right: 4 6 7 8 15
+inner1 (20)
+    on left: 10 11 12, on right: 7 8 9 10 11
+inner2 (21)
+    on left: 13 14 15, on right: 10 11 12
+
+
+State 0
+
+    0 $accept: . parsetree $end
+
+    PRINT     shift, and go to state 1
+    QUIT      shift, and go to state 2
+    VARIABLE  shift, and go to state 3
+
+    parsetree  go to state 4
+    lines      go to state 5
+    line       go to state 6
+
+
+State 1
+
+    4 line: PRINT . expression SEMICOLON
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    expression  go to state 10
+    inner1      go to state 11
+    inner2      go to state 12
+
+
+State 2
+
+    5 line: QUIT . SEMICOLON
+
+    SEMICOLON  shift, and go to state 13
+
+
+State 3
+
+    6 line: VARIABLE . EQUALS expression SEMICOLON
+
+    EQUALS  shift, and go to state 14
+
+
+State 4
+
+    0 $accept: parsetree . $end
+
+    $end  shift, and go to state 15
+
+
+State 5
+
+    1 parsetree: lines .
+    2 lines: lines . line
+
+    PRINT     shift, and go to state 1
+    QUIT      shift, and go to state 2
+    VARIABLE  shift, and go to state 3
+
+    $default  reduce using rule 1 (parsetree)
+
+    line  go to state 16
+
+
+State 6
+
+    3 lines: line .
+
+    $default  reduce using rule 3 (lines)
+
+
+State 7
+
+   15 inner2: LPAREN . expression RPAREN
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    expression  go to state 17
+    inner1      go to state 11
+    inner2      go to state 12
+
+
+State 8
+
+   13 inner2: VARIABLE .
+
+    $default  reduce using rule 13 (inner2)
+
+
+State 9
+
+   14 inner2: NUMBER .
+
+    $default  reduce using rule 14 (inner2)
+
+
+State 10
+
+    4 line: PRINT expression . SEMICOLON
+    7 expression: expression . PLUS inner1
+    8           | expression . MINUS inner1
+
+    PLUS       shift, and go to state 18
+    MINUS      shift, and go to state 19
+    SEMICOLON  shift, and go to state 20
+
+
+State 11
+
+    9 expression: inner1 .
+   10 inner1: inner1 . ASTERISK inner2
+   11       | inner1 . FSLASH inner2
+
+    ASTERISK  shift, and go to state 21
+    FSLASH    shift, and go to state 22
+
+    $default  reduce using rule 9 (expression)
+
+
+State 12
+
+   12 inner1: inner2 .
+
+    $default  reduce using rule 12 (inner1)
+
+
+State 13
+
+    5 line: QUIT SEMICOLON .
+
+    $default  reduce using rule 5 (line)
+
+
+State 14
+
+    6 line: VARIABLE EQUALS . expression SEMICOLON
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    expression  go to state 23
+    inner1      go to state 11
+    inner2      go to state 12
+
+
+State 15
+
+    0 $accept: parsetree $end .
+
+    $default  accept
+
+
+State 16
+
+    2 lines: lines line .
+
+    $default  reduce using rule 2 (lines)
+
+
+State 17
+
+    7 expression: expression . PLUS inner1
+    8           | expression . MINUS inner1
+   15 inner2: LPAREN expression . RPAREN
+
+    PLUS    shift, and go to state 18
+    MINUS   shift, and go to state 19
+    RPAREN  shift, and go to state 24
+
+
+State 18
+
+    7 expression: expression PLUS . inner1
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    inner1  go to state 25
+    inner2  go to state 12
+
+
+State 19
+
+    8 expression: expression MINUS . inner1
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    inner1  go to state 26
+    inner2  go to state 12
+
+
+State 20
+
+    4 line: PRINT expression SEMICOLON .
+
+    $default  reduce using rule 4 (line)
+
+
+State 21
+
+   10 inner1: inner1 ASTERISK . inner2
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    inner2  go to state 27
+
+
+State 22
+
+   11 inner1: inner1 FSLASH . inner2
+
+    LPAREN    shift, and go to state 7
+    VARIABLE  shift, and go to state 8
+    NUMBER    shift, and go to state 9
+
+    inner2  go to state 28
+
+
+State 23
+
+    6 line: VARIABLE EQUALS expression . SEMICOLON
+    7 expression: expression . PLUS inner1
+    8           | expression . MINUS inner1
+
+    PLUS       shift, and go to state 18
+    MINUS      shift, and go to state 19
+    SEMICOLON  shift, and go to state 29
+
+
+State 24
+
+   15 inner2: LPAREN expression RPAREN .
+
+    $default  reduce using rule 15 (inner2)
+
+
+State 25
+
+    7 expression: expression PLUS inner1 .
+   10 inner1: inner1 . ASTERISK inner2
+   11       | inner1 . FSLASH inner2
+
+    ASTERISK  shift, and go to state 21
+    FSLASH    shift, and go to state 22
+
+    $default  reduce using rule 7 (expression)
+
+
+State 26
+
+    8 expression: expression MINUS inner1 .
+   10 inner1: inner1 . ASTERISK inner2
+   11       | inner1 . FSLASH inner2
+
+    ASTERISK  shift, and go to state 21
+    FSLASH    shift, and go to state 22
+
+    $default  reduce using rule 8 (expression)
+
+
+State 27
+
+   10 inner1: inner1 ASTERISK inner2 .
+
+    $default  reduce using rule 10 (inner1)
+
+
+State 28
+
+   11 inner1: inner1 FSLASH inner2 .
+
+    $default  reduce using rule 11 (inner1)
+
+
+State 29
+
+    6 line: VARIABLE EQUALS expression SEMICOLON .
+
+    $default  reduce using rule 6 (line)
