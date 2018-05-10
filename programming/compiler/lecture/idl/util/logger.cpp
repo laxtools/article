@@ -6,7 +6,7 @@
 
 #include <filesystem>
 
-namespace r2c
+namespace b2c
 {
 
 const char*		log::name = "system";
@@ -66,4 +66,4 @@ void log::create_log_folder(const char* path)
 	create_directory(full_path);
 }
 
-} // r2c
+} // b2c

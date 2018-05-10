@@ -4,18 +4,18 @@
 
 #include <cassert>
 
-namespace r2c
+namespace b2c
 {
 void check_(bool cond, const char* msg, const char* func, const char* file, int line);
 }
 
 #ifdef _DEBUG
-	#define VERIFY(c) (void)(!!(c) || (r2c::check_(!!(c), #c, __FUNCTION__, __FILE__, __LINE__), 0)); assert(c);
+	#define VERIFY(c) (void)(!!(c) || (b2c::check_(!!(c), #c, __FUNCTION__, __FILE__, __LINE__), 0)); assert(c);
 #else 
 	#if R2C_ENABLE_RELEASE_CHECK  == 0
 		#define VERIFY(c) 
 	#else 
-		#define VERIFY(c) (void)(!!(c) || (r2c::check_(!!(c), #c, __FUNCTION__, __FILE__, __LINE__), 0))
+		#define VERIFY(c) (void)(!!(c) || (b2c::check_(!!(c), #c, __FUNCTION__, __FILE__, __LINE__), 0))
 	#endif
 #endif 
 

@@ -90,7 +90,7 @@ macro_line ("#"[^\n]*)
     }
   }
 
-  r2c::log()->debug("multi_comm = {}", parsed);
+  b2c::log()->debug("multi_comm = {}", parsed);
 }
 
 "cplus"	{
@@ -117,7 +117,7 @@ macro_line ("#"[^\n]*)
 
   g_program->set_verbatim_block(parsed);
 
-  r2c::log()->debug("cplus verbatim = {}", parsed);
+  b2c::log()->debug("cplus verbatim = {}", parsed);
 
   return tok_cplus;									
 }
@@ -152,7 +152,7 @@ macro_line ("#"[^\n]*)
 
 {macro_line} {
   yylval.vline = _strdup(yytext);
-  r2c::log()->debug("verbatim line {}", yylval.vline);
+  b2c::log()->debug("verbatim line {}", yylval.vline);
   return tok_macro_line;
 }
 
@@ -163,7 +163,7 @@ macro_line ("#"[^\n]*)
 }
 
 . {
-  r2c::log()->error("Unexpected token: {}", yytext);
+  b2c::log()->error("Unexpected token: {}", yytext);
 }
 
 %%

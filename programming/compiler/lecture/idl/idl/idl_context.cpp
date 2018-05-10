@@ -15,7 +15,7 @@ int idl_context::start(const config& _config)
 {
 	if (started_)
 	{
-		r2c::log()->error("Parsing started already.");
+		b2c::log()->error("Parsing started already.");
 
 		return -1;
 	}
@@ -43,14 +43,14 @@ int idl_context::start(const config& _config)
 
 void idl_context::push_program(idl_program::ptr p)
 {
-	r2c::log()->trace("Push program {}", p->get_path());
+	b2c::log()->trace("Push program {}", p->get_path());
 
 	pstack_.push(p);
 }
 
 void idl_context::push_file(const std::string& path)
 {
-	r2c::log()->trace("Push file {}", path);
+	b2c::log()->trace("Push file {}", path);
 
 	auto iter = states_.find(path);
 
@@ -80,7 +80,7 @@ int idl_context::parse()
 
 			if (rc != 0)
 			{
-				r2c::log()->error("Fail to parse file: {}", f.path);
+				b2c::log()->error("Fail to parse file: {}", f.path);
 
 				return -1;
 			}
@@ -91,7 +91,7 @@ int idl_context::parse()
 		}
 		else
 		{
-			r2c::log()->trace("Met a processed file: {}", f.path);
+			b2c::log()->trace("Met a processed file: {}", f.path);
 		}
 	}
 
@@ -112,7 +112,7 @@ int idl_context::generate()
 		{
 			if (!config_.continue_generation_on_error)
 			{
-				r2c::log()->error(
+				b2c::log()->error(
 					"Exit on generation failure on file: {}", 
 					p->get_path()
 				);
@@ -121,7 +121,7 @@ int idl_context::generate()
 			}
 			else
 			{
-				r2c::log()->error(
+				b2c::log()->error(
 					"Continue generation after failure on file: {}", 
 					p->get_path()
 				);
@@ -145,14 +145,14 @@ void idl_context::setup_config_log()
 	{
 		if (config_.log_level == options[i])
 		{
-			r2c::log()->set_level((spdlog::level::level_enum)i);
+			b2c::log()->set_level((spdlog::level::level_enum)i);
 		}
 	}
 
-	if (r2c::log()->level() == spdlog::level::debug ||
-		r2c::log()->level() == spdlog::level::trace)
+	if (b2c::log()->level() == spdlog::level::debug ||
+		b2c::log()->level() == spdlog::level::trace)
 	{
-		r2c::log()->info("Enabling parsing debugging output.");
+		b2c::log()->info("Enabling parsing debugging output.");
 
 		yydebug = 1;
 	}

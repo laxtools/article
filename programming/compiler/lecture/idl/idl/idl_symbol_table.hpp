@@ -23,7 +23,7 @@ struct idl_symbol
 class idl_symbol_table
 {
 public: 
-	using result = r2c::result<bool, idl_symbol>;
+	using result = b2c::result<bool, idl_symbol>;
 
 public:
 	result add(const idl_symbol& sym);

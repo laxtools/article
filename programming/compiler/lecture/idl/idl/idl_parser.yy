@@ -116,34 +116,34 @@
 Program:
 	DefinitionList 
 	{
-		r2c::log()->debug("Program => DefinitionList");
+		b2c::log()->debug("Program => DefinitionList");
 	}
 
 
 DefinitionList:
   DefinitionList Definition
     {
-		r2c::log()->debug("DefinitionList => DefinitionList Definition");
+		b2c::log()->debug("DefinitionList => DefinitionList Definition");
     }
 |
     {
-		r2c::log()->debug("DefinitionList => ");
+		b2c::log()->debug("DefinitionList => ");
     }
 
 Definition: 
 	Include
 	{
-		r2c::log()->debug("Include");
+		b2c::log()->debug("Include");
 	}
 |
 	Namespace 
 	{
-		r2c::log()->debug("Namespace");
+		b2c::log()->debug("Namespace");
 	}
 |
 	TypeDefinition 
     {
-		r2c::log()->debug("Definition => TypeDefinition");
+		b2c::log()->debug("Definition => TypeDefinition");
     }
 
 Include: 
@@ -169,7 +169,7 @@ IncludePath:
 Namespace: 
 	tok_namespace NamespaceTail tok_identifier SemicolonOptional
 	{
-		r2c::log()->debug("tok_namespace NamespaceTail tok_identifier SemicolonOptional");
+		b2c::log()->debug("tok_namespace NamespaceTail tok_identifier SemicolonOptional");
 
 		$$ = $2;	
 		$$->add_namespace($3);
@@ -191,19 +191,19 @@ NamespaceTail:
 TypeDefinition:
 	Enum
     {
-		r2c::log()->debug("TypeDefinition => Enum");
+		b2c::log()->debug("TypeDefinition => Enum");
 
 		g_program->add_node($1);
     }
 |	Struct 
 	{
-		r2c::log()->debug("TypeDefinition => Struct");
+		b2c::log()->debug("TypeDefinition => Struct");
 
 		g_program->add_node($1);
 	}
 |	Message
 	{
-		r2c::log()->debug("TypeDefinition => Message");
+		b2c::log()->debug("TypeDefinition => Message");
 
 		g_program->add_node($1);
 	}
@@ -211,7 +211,7 @@ TypeDefinition:
 Enum:
   tok_enum tok_identifier '{' EnumDefList '}' SemicolonOptional
     {
-		r2c::log()->debug("Enum => tok_enum tok_identifier '{' EnumDefList '}' SemicolonOptional");
+		b2c::log()->debug("Enum => tok_enum tok_identifier '{' EnumDefList '}' SemicolonOptional");
 
 		$$ = $4; 
 		$$->set_name($2);
@@ -228,14 +228,14 @@ Enum:
 EnumDefList:
   EnumDefList EnumDef
     {
-		r2c::log()->debug("EnumDefList => EnumDefList EnumDef");
+		b2c::log()->debug("EnumDefList => EnumDefList EnumDef");
 
 		$$ = $1;
 		$$->add_value($2);
     }
 |
     {
-		r2c::log()->debug("EnumDefList => ");
+		b2c::log()->debug("EnumDefList => ");
 
 		$$ = new idl_node_enum();
     }
@@ -243,7 +243,7 @@ EnumDefList:
 EnumDef:
   EnumValue CommaOrSemicolonOptional
     {
-		r2c::log()->debug("EnumDef => EnumValue CommaOrSemicolonOptional");
+		b2c::log()->debug("EnumDef => EnumValue CommaOrSemicolonOptional");
 
 		$$ = $1;
     }
@@ -251,7 +251,7 @@ EnumDef:
 EnumValue:
   tok_identifier '=' SimpleExpression
     {
-		r2c::log()->debug("EnumValue => tok_identifier '=' SimpleExpression");
+		b2c::log()->debug("EnumValue => tok_identifier '=' SimpleExpression");
 
 		$$ = new idl_enum_value();
 		$$->set_name($1);
@@ -260,7 +260,7 @@ EnumValue:
  |
   tok_identifier
     {
-		r2c::log()->debug("EnumValue => tok_identifier");
+		b2c::log()->debug("EnumValue => tok_identifier");
 
 		$$ = new idl_enum_value();
 		$$->set_name($1);
@@ -269,7 +269,7 @@ EnumValue:
 Struct:
   StructHead tok_identifier '{' StructFieldList '}' SemicolonOptional 
     {
-		r2c::log()->debug("Struct => StructHead tok_identifier '{' StructFieldList '}' SemicolonOptional"); 
+		b2c::log()->debug("Struct => StructHead tok_identifier '{' StructFieldList '}' SemicolonOptional"); 
 
 		$$ = $4;
 		$$->set_name($2);
@@ -286,21 +286,21 @@ Struct:
 StructHead:
   tok_struct
     {
-		r2c::log()->debug("StructHead => tok_struct");
+		b2c::log()->debug("StructHead => tok_struct");
     }
 
 
 StructFieldList:
   StructFieldList Field
     {
-		r2c::log()->debug("StructFieldList => StructFieldList Field");
+		b2c::log()->debug("StructFieldList => StructFieldList Field");
 
 		$1->add_field($2);
 		$$ = $1;
     }
 |
     {
-		r2c::log()->debug("FieldList => ");
+		b2c::log()->debug("FieldList => ");
 
 		// epsilon 매칭이 가장 먼저 실행된다. 왜?  
 
@@ -310,7 +310,7 @@ StructFieldList:
 Message:
   tok_message tok_identifier '{' MessageFieldList '}' SemicolonOptional 
     {
-		r2c::log()->debug("Message => tok_message tok_identifier '{' MessageBody '}' SemicolonOptional"); 
+		b2c::log()->debug("Message => tok_message tok_identifier '{' MessageBody '}' SemicolonOptional"); 
 
 		$$ = $4;
 		$$->set_name($2);
@@ -327,14 +327,14 @@ Message:
 MessageFieldList:
 	MessageFieldList Field
     {
-		r2c::log()->debug("MessageFieldList => MessageFieldList Field");
+		b2c::log()->debug("MessageFieldList => MessageFieldList Field");
 
 		$1->add_field($2);
 		$$ = $1;
     }
 |
     {
-		r2c::log()->debug("MessageFieldList => ");
+		b2c::log()->debug("MessageFieldList => ");
 
 		$$ = new idl_node_message();
     }
@@ -342,7 +342,7 @@ MessageFieldList:
 Field:
   SimpleType tok_identifier FieldValue CommaOrSemicolonOptional
     {
-		r2c::log()->debug("Field => SimpleType tok_identifier FieldValue CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => SimpleType tok_identifier FieldValue CommaOrSemicolonOptional");
 
 		// create a field 
 		$$ = new idl_field();
@@ -353,7 +353,7 @@ Field:
     }
 | SimpleType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional
 	{
-		r2c::log()->debug("Field => SimpleType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => SimpleType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
 
 		$$ = new idl_field();
 		$$->set_type($1);
@@ -364,7 +364,7 @@ Field:
 	}
 | FullType tok_identifier CommaOrSemicolonOptional
     {
-		r2c::log()->debug("Field => FullType tok_identifier CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => FullType tok_identifier CommaOrSemicolonOptional");
 
 		$$ = new idl_field();
 		$$->set_type($1);
@@ -373,7 +373,7 @@ Field:
     }
 | FullType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional
 	{
-		r2c::log()->debug("Field => FullType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => FullType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
 
 		$$ = new idl_field();
 		$$->set_type($1);
@@ -391,7 +391,7 @@ Field:
 	}
 | tok_macro_line 
 	{
-		r2c::log()->debug("tok_macro_line {}", $1);
+		b2c::log()->debug("tok_macro_line {}", $1);
 
 		$$ = new idl_field(); 
 
@@ -406,7 +406,7 @@ CaptureVerbatimBlock:
 FullType: 
   NameAccessor tok_identifier 
 	{
-		r2c::log()->debug("FullType => tok_identifier tok_namespace_separator tok_identifier");
+		b2c::log()->debug("FullType => tok_identifier tok_namespace_separator tok_identifier");
 
 		$$ = $1; 
 		$$->set_id($2);
@@ -427,49 +427,49 @@ NameAccessor:
 SimpleType:
   tok_string
     {
-		r2c::log()->debug("SimpleType => tok_string");
+		b2c::log()->debug("SimpleType => tok_string");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_STRING); 
     }
 | tok_bool
     {
-		r2c::log()->debug("SimpleType => tok_bool");
+		b2c::log()->debug("SimpleType => tok_bool");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_BOOL); 
     }
 | tok_i8
     {
-		r2c::log()->debug("SimpleType => tok_i8");
+		b2c::log()->debug("SimpleType => tok_i8");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_I8); 
     }
 | tok_i16
     {
-		r2c::log()->debug("SimpleType => tok_i16");
+		b2c::log()->debug("SimpleType => tok_i16");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_I16); 
     }
 | tok_i32
     {
-		r2c::log()->debug("SimpleType => tok_i32");
+		b2c::log()->debug("SimpleType => tok_i32");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_I32); 
     }
 | tok_i64
     {
-		r2c::log()->debug("SimpleType => tok_i64");
+		b2c::log()->debug("SimpleType => tok_i64");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_I64); 
     }
 | tok_float
     {
-		r2c::log()->debug("SimpleType => tok_float");
+		b2c::log()->debug("SimpleType => tok_float");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_FLOAT); 
     }
 | tok_double
     {
-		r2c::log()->debug("SimpleType => tok_double");
+		b2c::log()->debug("SimpleType => tok_double");
 
 		$$ = new idl_type_simple(idl_type_simple::types::TYPE_DOUBLE); 
     }
@@ -477,14 +477,14 @@ SimpleType:
 FieldValue:
   '=' SimpleExpression
     {
-		r2c::log()->debug("FieldValue => '=' SimpleExpression");
+		b2c::log()->debug("FieldValue => '=' SimpleExpression");
 
 		$$ = new idl_field_value(); 
 		$$->set_default_expression($2);
     }
 |
     {
-		r2c::log()->debug("FieldValue =>"); 
+		b2c::log()->debug("FieldValue =>"); 
 
 		$$ = new idl_field_value();
     }
@@ -492,14 +492,14 @@ FieldValue:
 SimpleExpression: 
    SimpleExpression '+' InnerExpression
 	{
-		r2c::log()->debug("SimpleExpression => SimpleExpression '+' InnerExpression");
+		b2c::log()->debug("SimpleExpression => SimpleExpression '+' InnerExpression");
 
 		$$ = $1; 
 		$$->add_plus($3);
 	}
 | SimpleExpression '-' InnerExpression
 	{
-		r2c::log()->debug("SimpleExpression => SimpleExpression '-' InnerExpression");
+		b2c::log()->debug("SimpleExpression => SimpleExpression '-' InnerExpression");
 
 		$$ = $1; 
 		$$->add_minus($3);
@@ -512,7 +512,7 @@ SimpleExpression:
 InnerExpression:
   FullType 
 	{
-		r2c::log()->debug("InnerExpression => FullType '.'  tok_identifier");
+		b2c::log()->debug("InnerExpression => FullType '.'  tok_identifier");
 
 		$$ = new idl_expression(); 
 		auto fv = new idl_expression_value(); 
@@ -521,7 +521,7 @@ InnerExpression:
 	}
 | '+' tok_int_constant 
 	{
-		r2c::log()->debug("'+' => tok_int_constant");
+		b2c::log()->debug("'+' => tok_int_constant");
 
 		$$ = new idl_expression(); 
 		auto cv = new idl_expression_value(); 
@@ -530,7 +530,7 @@ InnerExpression:
 	}
 | '-' tok_int_constant 
 	{
-		r2c::log()->debug("'-' => tok_int_constant");
+		b2c::log()->debug("'-' => tok_int_constant");
 
 		$$ = new idl_expression(); 
 		auto cv = new idl_expression_value(); 
@@ -539,7 +539,7 @@ InnerExpression:
 	}
 | tok_int_constant 
 	{
-		r2c::log()->debug("InnerExpression => tok_int_constant");
+		b2c::log()->debug("InnerExpression => tok_int_constant");
 
 		$$ = new idl_expression(); 
 		auto cv = new idl_expression_value(); 

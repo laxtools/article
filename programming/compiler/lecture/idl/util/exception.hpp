@@ -3,7 +3,7 @@
 #include <exception>
 #include <spdlog/fmt/fmt.h>
 
-namespace r2c
+namespace b2c
 {
 
 class exception : public std::exception
@@ -24,6 +24,6 @@ private:
 	std::string desc_;
 };
 
-} // r2c
+} // b2c
 
 #define THROW(m) 	throw lax::util::exception(m, __FILE__, __LINE__)

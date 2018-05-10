@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 #include <mutex>
 
-namespace r2c
+namespace b2c
 {
 
 /// 
@@ -50,4 +50,4 @@ inline std::shared_ptr<spdlog::logger> log()
 	return log::get();
 }
 
-} // r2c
+} // b2c

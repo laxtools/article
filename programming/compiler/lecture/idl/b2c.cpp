@@ -13,7 +13,7 @@ int parse(const std::string& path);
 
 int main(int argc, char* argv[])
 {
-	po::options_description description("r2c idl compiler usage");
+	po::options_description description("b2c idl compiler usage");
 
 	description.add_options()
 		("help,h", "Display this help message")

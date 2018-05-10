@@ -1152,7 +1152,7 @@ YY_RULE_SETUP
     }
   }
 
-  r2c::log()->debug("multi_comm = {}", parsed);
+  b2c::log()->debug("multi_comm = {}", parsed);
 }
 	YY_BREAK
 case 20:
@@ -1182,7 +1182,7 @@ YY_RULE_SETUP
 
   g_program->set_verbatim_block(parsed);
 
-  r2c::log()->debug("cplus verbatim = {}", parsed);
+  b2c::log()->debug("cplus verbatim = {}", parsed);
 
   return tok_cplus;									
 }
@@ -1229,7 +1229,7 @@ YY_RULE_SETUP
 #line 153 "idl/idl_lexer.ll"
 {
   yylval.vline = _strdup(yytext);
-  r2c::log()->debug("verbatim line {}", yylval.vline);
+  b2c::log()->debug("verbatim line {}", yylval.vline);
   return tok_macro_line;
 }
 	YY_BREAK
@@ -1246,7 +1246,7 @@ case 26:
 YY_RULE_SETUP
 #line 165 "idl/idl_lexer.ll"
 {
-  r2c::log()->error("Unexpected token: {}", yytext);
+  b2c::log()->error("Unexpected token: {}", yytext);
 }
 	YY_BREAK
 case 27:

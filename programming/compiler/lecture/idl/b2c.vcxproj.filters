@@ -120,9 +120,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>main</Filter>
     </ClCompile>
-    <ClCompile Include="r2c.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
     <ClCompile Include="util\logger.cpp">
       <Filter>util</Filter>
     </ClCompile>
@@ -152,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="idl\idl_context.cpp">
       <Filter>idl</Filter>
+    </ClCompile>
+    <ClCompile Include="b2c.cpp">
+      <Filter>main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

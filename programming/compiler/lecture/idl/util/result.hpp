@@ -1,6 +1,6 @@
 #pragma once 
 
-namespace r2c
+namespace b2c
 {
 
 /// result and value passing.   

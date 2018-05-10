@@ -12,7 +12,7 @@ class idl_symbol_table;
 extern idl_program* g_program;
 extern idl_symbol_table* g_symbols;
 
-using result = r2c::result<bool, std::string>;
+using result = b2c::result<bool, std::string>;
 
 class generator
 {

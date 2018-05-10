@@ -5,7 +5,7 @@
 #define WINDOWS_LEAN_AND_MEAN
 #include <windows.h>
 
-namespace r2c {
+namespace b2c {
 
 std::string platform::get_current_dir()
 {

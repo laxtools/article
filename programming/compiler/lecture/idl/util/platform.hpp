@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace r2c
+namespace b2c
 {
 
 class platform

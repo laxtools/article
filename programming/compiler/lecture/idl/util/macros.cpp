@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace r2c
+namespace b2c
 {
 /// cond에 따라 로그를 남긴다. 
 void check_(bool cond, const char* msg, const char* func, const char* file, int line)
@@ -23,4 +23,4 @@ void check_(bool cond, const char* msg, const char* func, const char* file, int 
 
 	f.close();
 }
-} // r2c
+} // b2c

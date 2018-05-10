@@ -40,21 +40,21 @@ void yyerror(const char* fmt, ...)
 	char err[buf_size];
 
 	sprintf_s(err, buf_size, "[ERROR:%s:%d] (last token was '%s')\n", g_curpath.c_str(), yylineno, yytext);
-	r2c::log()->error(err);
+	b2c::log()->error(err);
  
 	va_list args;
 	va_start(args, fmt);
 	sprintf_s(err, buf_size, fmt, args);
 	va_end(args);
 
-	r2c::log()->error(err);
+	b2c::log()->error(err);
 }
 
 int parse_file(const std::string& path)
 {
 	FILE* fp = nullptr;
 
-	r2c::log()->info("Start parsing {}", path);
+	b2c::log()->info("Start parsing {}", path);
 
 	fopen_s(&fp, path.c_str(), "r");
 
@@ -62,7 +62,7 @@ int parse_file(const std::string& path)
 
 	if (yyin == nullptr)
 	{
-		r2c::log()->critical("Cannot open file {}", path);
+		b2c::log()->critical("Cannot open file {}", path);
 		return -1;
 	}
 
@@ -74,7 +74,7 @@ int parse_file(const std::string& path)
 
 	idl_context::inst().push_program(prog);
 
-	r2c::log()->info("Finished");
+	b2c::log()->info("Finished");
 
 	if (rc == 0)
 	{
@@ -135,13 +135,13 @@ bool generate_program_csharp(idl_program::ptr program)
 
 	std::ofstream os(in.c_str());
 
-	r2c::log()->info("Generating {} ...", in.string());
+	b2c::log()->info("Generating {} ...", in.string());
 
 	auto g1 = new csharp_generator(program.get(), os);
 
 	auto rc = g1->generate();
 
-	r2c::log()->info(
+	b2c::log()->info(
 		"Finished generation of {} with {}: {}", 
 		in.string(), rc.code, rc.value
 	);
@@ -159,13 +159,13 @@ bool generate_program_cplus(idl_program::ptr program)
 
 	std::ofstream os(in.c_str());
 
-	r2c::log()->info("Generating {} ...", in.string());
+	b2c::log()->info("Generating {} ...", in.string());
 
 	auto g1 = new cplus_generator(program.get(), os);
 
 	auto rc = g1->generate();
 
-	r2c::log()->info(
+	b2c::log()->info(
 		"Finished generation of {} with {}: {}", 
 		in.string(), rc.code, rc.value
 	);

@@ -10,7 +10,7 @@ idl_symbol_table::add(const idl_symbol& sym)
 
 	if (iter != symbols_.end())
 	{
-		r2c::log()->error("duplicate symbol {}", sym.full_name_);
+		b2c::log()->error("duplicate symbol {}", sym.full_name_);
 		return result(false, sym);
 	}
 

@@ -1499,7 +1499,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 118 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Program => DefinitionList");
+		b2c::log()->debug("Program => DefinitionList");
 	}
     break;
 
@@ -1507,7 +1507,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 125 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("DefinitionList => DefinitionList Definition");
+		b2c::log()->debug("DefinitionList => DefinitionList Definition");
     }
     break;
 
@@ -1515,7 +1515,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 129 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("DefinitionList => ");
+		b2c::log()->debug("DefinitionList => ");
     }
     break;
 
@@ -1523,7 +1523,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 135 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Include");
+		b2c::log()->debug("Include");
 	}
     break;
 
@@ -1531,7 +1531,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 140 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Namespace");
+		b2c::log()->debug("Namespace");
 	}
     break;
 
@@ -1539,7 +1539,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 145 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Definition => TypeDefinition");
+		b2c::log()->debug("Definition => TypeDefinition");
     }
     break;
 
@@ -1575,7 +1575,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 171 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("tok_namespace NamespaceTail tok_identifier SemicolonOptional");
+		b2c::log()->debug("tok_namespace NamespaceTail tok_identifier SemicolonOptional");
 
 		(yyval.tnamespace) = (yyvsp[(2) - (4)].tnamespace);	
 		(yyval.tnamespace)->add_namespace((yyvsp[(3) - (4)].id));
@@ -1605,7 +1605,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 193 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("TypeDefinition => Enum");
+		b2c::log()->debug("TypeDefinition => Enum");
 
 		g_program->add_node((yyvsp[(1) - (1)].tenum));
     }
@@ -1615,7 +1615,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 199 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("TypeDefinition => Struct");
+		b2c::log()->debug("TypeDefinition => Struct");
 
 		g_program->add_node((yyvsp[(1) - (1)].tstruct));
 	}
@@ -1625,7 +1625,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 205 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("TypeDefinition => Message");
+		b2c::log()->debug("TypeDefinition => Message");
 
 		g_program->add_node((yyvsp[(1) - (1)].tmessage));
 	}
@@ -1635,7 +1635,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 213 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Enum => tok_enum tok_identifier '{' EnumDefList '}' SemicolonOptional");
+		b2c::log()->debug("Enum => tok_enum tok_identifier '{' EnumDefList '}' SemicolonOptional");
 
 		(yyval.tenum) = (yyvsp[(4) - (6)].tenum); 
 		(yyval.tenum)->set_name((yyvsp[(2) - (6)].id));
@@ -1654,7 +1654,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 230 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("EnumDefList => EnumDefList EnumDef");
+		b2c::log()->debug("EnumDefList => EnumDefList EnumDef");
 
 		(yyval.tenum) = (yyvsp[(1) - (2)].tenum);
 		(yyval.tenum)->add_value((yyvsp[(2) - (2)].tenumv));
@@ -1665,7 +1665,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 237 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("EnumDefList => ");
+		b2c::log()->debug("EnumDefList => ");
 
 		(yyval.tenum) = new idl_node_enum();
     }
@@ -1675,7 +1675,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 245 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("EnumDef => EnumValue CommaOrSemicolonOptional");
+		b2c::log()->debug("EnumDef => EnumValue CommaOrSemicolonOptional");
 
 		(yyval.tenumv) = (yyvsp[(1) - (2)].tenumv);
     }
@@ -1685,7 +1685,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 253 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("EnumValue => tok_identifier '=' SimpleExpression");
+		b2c::log()->debug("EnumValue => tok_identifier '=' SimpleExpression");
 
 		(yyval.tenumv) = new idl_enum_value();
 		(yyval.tenumv)->set_name((yyvsp[(1) - (3)].id));
@@ -1697,7 +1697,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 262 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("EnumValue => tok_identifier");
+		b2c::log()->debug("EnumValue => tok_identifier");
 
 		(yyval.tenumv) = new idl_enum_value();
 		(yyval.tenumv)->set_name((yyvsp[(1) - (1)].id));
@@ -1708,7 +1708,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 271 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Struct => StructHead tok_identifier '{' StructFieldList '}' SemicolonOptional"); 
+		b2c::log()->debug("Struct => StructHead tok_identifier '{' StructFieldList '}' SemicolonOptional"); 
 
 		(yyval.tstruct) = (yyvsp[(4) - (6)].tstruct);
 		(yyval.tstruct)->set_name((yyvsp[(2) - (6)].id));
@@ -1727,7 +1727,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 288 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("StructHead => tok_struct");
+		b2c::log()->debug("StructHead => tok_struct");
     }
     break;
 
@@ -1735,7 +1735,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 295 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("StructFieldList => StructFieldList Field");
+		b2c::log()->debug("StructFieldList => StructFieldList Field");
 
 		(yyvsp[(1) - (2)].tstruct)->add_field((yyvsp[(2) - (2)].tfield));
 		(yyval.tstruct) = (yyvsp[(1) - (2)].tstruct);
@@ -1746,7 +1746,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 302 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("FieldList => ");
+		b2c::log()->debug("FieldList => ");
 
 		// epsilon 매칭이 가장 먼저 실행된다. 왜?  
 
@@ -1758,7 +1758,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 312 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Message => tok_message tok_identifier '{' MessageBody '}' SemicolonOptional"); 
+		b2c::log()->debug("Message => tok_message tok_identifier '{' MessageBody '}' SemicolonOptional"); 
 
 		(yyval.tmessage) = (yyvsp[(4) - (6)].tmessage);
 		(yyval.tmessage)->set_name((yyvsp[(2) - (6)].id));
@@ -1777,7 +1777,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 329 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("MessageFieldList => MessageFieldList Field");
+		b2c::log()->debug("MessageFieldList => MessageFieldList Field");
 
 		(yyvsp[(1) - (2)].tmessage)->add_field((yyvsp[(2) - (2)].tfield));
 		(yyval.tmessage) = (yyvsp[(1) - (2)].tmessage);
@@ -1788,7 +1788,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 336 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("MessageFieldList => ");
+		b2c::log()->debug("MessageFieldList => ");
 
 		(yyval.tmessage) = new idl_node_message();
     }
@@ -1798,7 +1798,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 344 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Field => SimpleType tok_identifier FieldValue CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => SimpleType tok_identifier FieldValue CommaOrSemicolonOptional");
 
 		// create a field 
 		(yyval.tfield) = new idl_field();
@@ -1813,7 +1813,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 355 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Field => SimpleType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => SimpleType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
 
 		(yyval.tfield) = new idl_field();
 		(yyval.tfield)->set_type((yyvsp[(1) - (6)].tsimple));
@@ -1828,7 +1828,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 366 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Field => FullType tok_identifier CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => FullType tok_identifier CommaOrSemicolonOptional");
 
 		(yyval.tfield) = new idl_field();
 		(yyval.tfield)->set_type((yyvsp[(1) - (3)].tfull));
@@ -1841,7 +1841,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 375 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("Field => FullType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
+		b2c::log()->debug("Field => FullType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional");
 
 		(yyval.tfield) = new idl_field();
 		(yyval.tfield)->set_type((yyvsp[(1) - (6)].tfull));
@@ -1867,7 +1867,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 393 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("tok_macro_line {}", (yyvsp[(1) - (1)].vline));
+		b2c::log()->debug("tok_macro_line {}", (yyvsp[(1) - (1)].vline));
 
 		(yyval.tfield) = new idl_field(); 
 
@@ -1887,7 +1887,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 408 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("FullType => tok_identifier tok_namespace_separator tok_identifier");
+		b2c::log()->debug("FullType => tok_identifier tok_namespace_separator tok_identifier");
 
 		(yyval.tfull) = (yyvsp[(1) - (2)].tfull); 
 		(yyval.tfull)->set_id((yyvsp[(2) - (2)].id));
@@ -1915,7 +1915,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 429 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_string");
+		b2c::log()->debug("SimpleType => tok_string");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_STRING); 
     }
@@ -1925,7 +1925,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 435 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_bool");
+		b2c::log()->debug("SimpleType => tok_bool");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_BOOL); 
     }
@@ -1935,7 +1935,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 441 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_i8");
+		b2c::log()->debug("SimpleType => tok_i8");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_I8); 
     }
@@ -1945,7 +1945,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 447 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_i16");
+		b2c::log()->debug("SimpleType => tok_i16");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_I16); 
     }
@@ -1955,7 +1955,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 453 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_i32");
+		b2c::log()->debug("SimpleType => tok_i32");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_I32); 
     }
@@ -1965,7 +1965,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 459 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_i64");
+		b2c::log()->debug("SimpleType => tok_i64");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_I64); 
     }
@@ -1975,7 +1975,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 465 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_float");
+		b2c::log()->debug("SimpleType => tok_float");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_FLOAT); 
     }
@@ -1985,7 +1985,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 471 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleType => tok_double");
+		b2c::log()->debug("SimpleType => tok_double");
 
 		(yyval.tsimple) = new idl_type_simple(idl_type_simple::types::TYPE_DOUBLE); 
     }
@@ -1995,7 +1995,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 479 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("FieldValue => '=' SimpleExpression");
+		b2c::log()->debug("FieldValue => '=' SimpleExpression");
 
 		(yyval.tfieldv) = new idl_field_value(); 
 		(yyval.tfieldv)->set_default_expression((yyvsp[(2) - (2)].texpr));
@@ -2006,7 +2006,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 486 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("FieldValue =>"); 
+		b2c::log()->debug("FieldValue =>"); 
 
 		(yyval.tfieldv) = new idl_field_value();
     }
@@ -2016,7 +2016,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 494 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleExpression => SimpleExpression '+' InnerExpression");
+		b2c::log()->debug("SimpleExpression => SimpleExpression '+' InnerExpression");
 
 		(yyval.texpr) = (yyvsp[(1) - (3)].texpr); 
 		(yyval.texpr)->add_plus((yyvsp[(3) - (3)].texpr));
@@ -2027,7 +2027,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 501 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("SimpleExpression => SimpleExpression '-' InnerExpression");
+		b2c::log()->debug("SimpleExpression => SimpleExpression '-' InnerExpression");
 
 		(yyval.texpr) = (yyvsp[(1) - (3)].texpr); 
 		(yyval.texpr)->add_minus((yyvsp[(3) - (3)].texpr));
@@ -2046,7 +2046,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 514 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("InnerExpression => FullType '.'  tok_identifier");
+		b2c::log()->debug("InnerExpression => FullType '.'  tok_identifier");
 
 		(yyval.texpr) = new idl_expression(); 
 		auto fv = new idl_expression_value(); 
@@ -2059,7 +2059,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 523 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("'+' => tok_int_constant");
+		b2c::log()->debug("'+' => tok_int_constant");
 
 		(yyval.texpr) = new idl_expression(); 
 		auto cv = new idl_expression_value(); 
@@ -2072,7 +2072,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 532 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("'-' => tok_int_constant");
+		b2c::log()->debug("'-' => tok_int_constant");
 
 		(yyval.texpr) = new idl_expression(); 
 		auto cv = new idl_expression_value(); 
@@ -2085,7 +2085,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 541 "idl/idl_parser.yy"
     {
-		r2c::log()->debug("InnerExpression => tok_int_constant");
+		b2c::log()->debug("InnerExpression => tok_int_constant");
 
 		(yyval.texpr) = new idl_expression(); 
 		auto cv = new idl_expression_value(); 
