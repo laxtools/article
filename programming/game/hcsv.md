@@ -192,15 +192,81 @@ TableManager에서 로딩을 전부 한다.  Reload를 위해 TableManager를 �
 
 
 
-# 엑셀 파일 
 
-과제들 
+
+
+
+# XLNT와 엑셀 리서치  
+
+## 목표  
+
+스키마로 정의한 내용으로 Excel 파일을 생성하거나 이미 있는 파일의 내용을 수정한다.  Excel은 일정한 포맷을 갖고 있어야 한다.  수정할 때 항목의 삭제나 추가가 가능해야 한다. 
+
+
+
+## 과제 
 
 - 기획자가 수정한 내용의 반영 
   - 스키마 변경 시에도 기존 데이터와 엑셀 내용이 변경되지 않아야 함 
   - 엑셀의 프로그래밍 기능 등
+  - ASPOSE.Cells로 가능할 것으로 보임
 - 주석 등 표시 방법 
+- 주 키 값의 범위에 따른 파일 분할
+  - 여러 명이 작업 가능하게 만들기
+  - Excel 파일의 분할과 CSV 통합 
 - 실제 RPG 게임의 구성 
+
+
+
+엑셀 자체에 스키마를 구성하면 별도의 생성 과정은 필요 없다.  언어처럼 구현하고 이를 분석하여 처리하는 방법이 있다.  어떠한가?  
+
+
+
+## 자료 
+
+https://github.com/tfussell/xlnt
+
+- 무료 도구 
+- 수식이나 XLSM (매크로 있는 파일)은 지원 안 됨 
+
+https://products.aspose.com/cells/cpp
+
+- 유료 도구 
+- 배포는 자유로운 듯 
+- keedong / 원래 비번 계정 생성. 
+- USD 999 
+  - 100만원 좀 더 되네.
+  - 매우 강력한 기능들을 포함하고 있음
+  - 다른 언어로된 라이브러리가 있어도 됨
+
+https://libxlsxwriter.github.io/
+
+- c 버전 
+- XLNT보다 더 많은 기능 
+- 쓰기만 가능? 
+
+https://openpyxl.readthedocs.io
+
+- excel 라이브러리 
+
+  ​
+
+
+![data_sample_1](D:\laxtools\article\programming\game\data_sample_1.png)
+
+
+
+Excel 자체에 스키마를 내장하는 방법. 
+
+
+
+https://github.com/manns/pyspread
+
+- python 코드를 실행할 수 있는 스프레드시트 
+
+
+
+
 
 
 
