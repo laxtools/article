@@ -340,6 +340,8 @@ result cplus_generator::generate_field_functions(const idl_field* field)
 
 result cplus_generator::generate_serialize(const idl_node_struct* sn)
 {
+	sn;
+
 	// 각 필드에 대해, 
 	// - simple 타잎이면 직접 serialize 
 	// - enum 참조이면 정수로 변환해서 serialize 

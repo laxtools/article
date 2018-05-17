@@ -1,4 +1,5 @@
 %{
+#pragma warning(disable: 4005)
 #include <cstdio>
 #include <cstdlib>
 #include <string>

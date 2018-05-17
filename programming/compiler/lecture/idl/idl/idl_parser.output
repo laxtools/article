@@ -12,7 +12,7 @@ Grammar
     1 Program: DefinitionList
 
     2 DefinitionList: DefinitionList Definition
-    3               | /* empty */
+    3               | %empty
 
     4 Definition: Include
     5           | Namespace
@@ -21,12 +21,12 @@ Grammar
     7 Include: tok_include '"' IncludePath tok_identifier '"'
 
     8 IncludePath: IncludePath tok_identifier '/'
-    9            | /* empty */
+    9            | %empty
 
    10 Namespace: tok_namespace NamespaceTail tok_identifier SemicolonOptional
 
    11 NamespaceTail: NamespaceTail tok_identifier tok_namespace_separator
-   12              | /* empty */
+   12              | %empty
 
    13 TypeDefinition: Enum
    14               | Struct
@@ -35,7 +35,7 @@ Grammar
    16 Enum: tok_enum tok_identifier '{' EnumDefList '}' SemicolonOptional
 
    17 EnumDefList: EnumDefList EnumDef
-   18            | /* empty */
+   18            | %empty
 
    19 EnumDef: EnumValue CommaOrSemicolonOptional
 
@@ -47,12 +47,12 @@ Grammar
    23 StructHead: tok_struct
 
    24 StructFieldList: StructFieldList Field
-   25                | /* empty */
+   25                | %empty
 
    26 Message: tok_message tok_identifier '{' MessageFieldList '}' SemicolonOptional
 
    27 MessageFieldList: MessageFieldList Field
-   28                 | /* empty */
+   28                 | %empty
 
    29 Field: SimpleType tok_identifier FieldValue CommaOrSemicolonOptional
    30      | SimpleType tok_identifier '[' SimpleExpression ']' CommaOrSemicolonOptional
@@ -61,12 +61,12 @@ Grammar
    33      | tok_cplus CaptureVerbatimBlock
    34      | tok_macro_line
 
-   35 CaptureVerbatimBlock: /* empty */
+   35 CaptureVerbatimBlock: %empty
 
    36 FullType: NameAccessor tok_identifier
 
    37 NameAccessor: NameAccessor tok_identifier tok_namespace_separator
-   38             | /* empty */
+   38             | %empty
 
    39 SimpleType: tok_string
    40           | tok_bool
@@ -78,7 +78,7 @@ Grammar
    46           | tok_double
 
    47 FieldValue: '=' SimpleExpression
-   48           | /* empty */
+   48           | %empty
 
    49 SimpleExpression: SimpleExpression '+' InnerExpression
    50                 | SimpleExpression '-' InnerExpression
@@ -91,10 +91,10 @@ Grammar
 
    56 CommaOrSemicolonOptional: ','
    57                         | ';'
-   58                         | /* empty */
+   58                         | %empty
 
    59 SemicolonOptional: ';'
-   60                  | /* empty */
+   60                  | %empty
 
 
 Terminals, with rules where they appear
