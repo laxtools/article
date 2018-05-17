@@ -1,0 +1,38 @@
+
+namespace sub::test;
+
+enum FieldSize 
+{
+	embed_1 = 10
+};
+
+struct Position
+{
+	float x; 
+	float y; 
+	float z;
+};
+
+struct Embed
+{
+	i8 f1;
+	Position pos;
+};
+
+struct Test01
+{
+	i8 f1; 
+	i16 f2; 
+	i32 f3; 
+	i64 f4; 
+	
+	float f5; 
+	double f6; 
+	
+	i8 a1[3];	
+	float a2[3];
+
+	Embed e[FieldSize::embed_1];
+};
+
+

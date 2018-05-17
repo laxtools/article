@@ -1,0 +1,46 @@
+
+include "test_02.b2"
+
+namespace Test::Message;
+
+enum Hello 
+{
+	V1,		// 기본 값이 없으면 0으로 됨
+	V2,
+	V3 = 100 
+}; 
+
+struct Position 
+{
+	float x = 0; 
+	float y = 0;
+	float z = 0;
+}
+
+struct Test 
+{
+	i32 V1 = 33;  
+#if DEBUG
+	double Ff; 
+#else
+	Hello Hv;
+#endif
+
+	na::h  Can;
+	na::h  Arr[Hello::v3];
+};
+
+// whole line comment
+struct Level2
+{
+	Test Field1; 
+	Self::Hello::Test Field2[2];  // trailing comment
+};
+
+message ReqMove
+{
+	string 					Who;
+	Vector3 				Pos;		// 현재위치.
+	float 					Dir; 		// rotation radian
+	i32						Hp;	
+};
