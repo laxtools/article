@@ -92,6 +92,9 @@ public:
 	std::string get_typename_in_csharp(types type) const
 	{
 		switch (type) {
+		case TYPE_STRING:
+			return "string";
+			break;
 		case TYPE_BOOL:
 			return "bool";
 			break;
@@ -122,6 +125,9 @@ public:
 	std::string get_typename_in_cplus(types type) const
 	{
 		switch (type) {
+		case TYPE_STRING:
+			return "string";
+			break;
 		case TYPE_BOOL:
 			return "bool";
 			break;

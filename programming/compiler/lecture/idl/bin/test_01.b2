@@ -10,13 +10,6 @@ enum Hello
 	V3 = 100 
 }; 
 
-struct Position 
-{
-	float x = 0; 
-	float y = 0;
-	float z = 0;
-}
-
 struct Test 
 {
 	i32 V1 = 33;  

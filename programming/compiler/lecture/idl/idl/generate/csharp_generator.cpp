@@ -378,7 +378,7 @@ result csharp_generator::generate_namespace_begin()
 	}
 	else
 	{
-		os_ << "namespace r2" << std::endl;
+		os_ << "namespace b2" << std::endl;
 		os_ << "{" << std::endl;
 	}
 
@@ -410,7 +410,7 @@ result csharp_generator::generate_namespace_end()
 	}
 	else
 	{
-		os_ << "} // r2" << std::endl;
+		os_ << "} // b2" << std::endl;
 	}
 
 	return result(true, "Success");
