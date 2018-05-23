@@ -264,11 +264,6 @@ result cplus_generator::generate_field(const idl_field* field, bool add_prefix)
 	os_ << field->get_type_string("c++");
 	os_ << "\t";
 
-	// variable
-	if (add_prefix)
-	{
-		os_ << "__m";
-	}
 
 	os_ << field->get_variable_name();
 
@@ -440,8 +435,9 @@ result cplus_generator::generate_prolog()
 {
 	os_ << "#pragma once" << std::endl;
 	os_ << "#include <stdint.h>" << std::endl;
+	os_ << "#include <string>" << std::endl;
+	os_ << "#include <vector>" << std::endl;
 	os_ << std::endl;
-	os_ << "#pragma pack(push, 1)" << std::endl;
 	os_ << std::endl;
 
 	return result(true, "Success");
@@ -463,7 +459,7 @@ result cplus_generator::generate_namespace_begin()
 	}
 	else
 	{
-		os_ << "namespace r2" << std::endl;
+		os_ << "namespace b2" << std::endl;
 		os_ << "{" << std::endl;
 	}
 
@@ -486,7 +482,7 @@ result cplus_generator::generate_namespace_end()
 	}
 	else
 	{
-		os_ << "} // r2" << std::endl;
+		os_ << "} // b2" << std::endl;
 	}
 
 	return result(true, "Success");
@@ -494,8 +490,6 @@ result cplus_generator::generate_namespace_end()
 
 result cplus_generator::generate_epilog()
 {
-	os_ << std::endl;
-	os_ << "#pragma pack(pop)" << std::endl;
 	os_ << std::endl;
 
 	return result(true, "Success");

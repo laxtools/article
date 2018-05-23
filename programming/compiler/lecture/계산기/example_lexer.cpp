@@ -485,6 +485,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "example02.ll"
 #line 2 "example02.ll"
+#pragma warning(disable: 4005)
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -492,8 +493,8 @@ using namespace std;
 #include "example_parser.hpp"
 void yyerror(char*);
 int yyparser(void);
-#line 495 "example_lexer.cpp"
 #line 496 "example_lexer.cpp"
+#line 497 "example_lexer.cpp"
 
 #define INITIAL 0
 
@@ -707,9 +708,9 @@ YY_DECL
 		}
 
 	{
-#line 13 "example02.ll"
+#line 14 "example02.ll"
 
-#line 712 "example_lexer.cpp"
+#line 713 "example_lexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -779,75 +780,75 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 14 "example02.ll"
+#line 15 "example02.ll"
 ; // do nothing
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "example02.ll"
+#line 16 "example02.ll"
 return PRINT;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 16 "example02.ll"
+#line 17 "example02.ll"
 return QUIT; 
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 17 "example02.ll"
+#line 18 "example02.ll"
 {yylval.str_val = new string(yytext); return VARIABLE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "example02.ll"
+#line 19 "example02.ll"
 {yylval.double_val = atof(yytext); return NUMBER; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 19 "example02.ll"
+#line 20 "example02.ll"
 return EQUALS;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 20 "example02.ll"
+#line 21 "example02.ll"
 return PLUS;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 21 "example02.ll"
+#line 22 "example02.ll"
 return MINUS;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 22 "example02.ll"
+#line 23 "example02.ll"
 return ASTERISK;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 23 "example02.ll"
+#line 24 "example02.ll"
 return FSLASH;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 24 "example02.ll"
+#line 25 "example02.ll"
 return LPAREN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 25 "example02.ll"
+#line 26 "example02.ll"
 return RPAREN;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 26 "example02.ll"
+#line 27 "example02.ll"
 return SEMICOLON;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 27 "example02.ll"
+#line 28 "example02.ll"
 ECHO;
 	YY_BREAK
-#line 850 "example_lexer.cpp"
+#line 851 "example_lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1864,7 +1865,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 27 "example02.ll"
+#line 28 "example02.ll"
 
 
 void yyerror(char* str) { printf("Parse Error at %d: \n %s with %s\n", yylineno, str, yytext); }
@@ -1873,7 +1874,7 @@ int yywrap(void) {return 0;}
 
 int main(int num_args, char** args)
 {
-  if ( num_args != 2 ) { printf("usage: ./parser1 filename\n"); exit(-1); }
+  if ( num_args != 2 ) { printf("usage: ./example01.exe filename\n"); exit(-1); }
 
   FILE* file = NULL; 
 

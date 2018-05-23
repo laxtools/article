@@ -40,7 +40,10 @@ line:         PRINT expression SEMICOLON  { printf("%lf\n", $2); }
 
 expression:   expression PLUS inner1      { $$ = $1 + $3; }
           |   expression MINUS inner1     { $$ = $1 - $3; }
-          |   inner1                      { $$ = $1; };
+          |   inner1                      
+		  { 
+			$$ = $1; 
+		   };
 
 inner1:       inner1  ASTERISK  inner2    { $$ = $1 * $3; }
           |   inner1  FSLASH    inner2

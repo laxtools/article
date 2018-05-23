@@ -1,4 +1,5 @@
 %{
+#pragma warning(disable: 4005)
 #include <cstdio>
 #include <cstdlib>
 #include <string>
@@ -32,7 +33,7 @@ int yywrap(void) {return 0;}
 
 int main(int num_args, char** args)
 {
-  if ( num_args != 2 ) { printf("usage: ./parser1 filename\n"); exit(-1); }
+  if ( num_args != 2 ) { printf("usage: ./example01.exe filename\n"); exit(-1); }
 
   FILE* file = NULL; 
 
