@@ -218,24 +218,15 @@ TSWLatexianTemp*
 
 # expex forward references with \gathertags
 *-tags.tex
+
+*.ipch
+Debug
+Release
+*.db
+*.pdb
 /algorithm/gfx/play/Cinder
-/algorithm/gfx/play/tutorial
-/programming/gfx/play/tutorial/.vs/tutorial/v15/ipch/AutoPCH/a096116ef9c0f135/*.ipch
-/programming/gfx/play/tutorial/.vs/tutorial/v15/*.db
-/programming/gfx/play/tutorial/Debug
-/programming/gfx/play/tutorial/Release
-/programming/compiler/lecture/계산기/Debug/*.ilk
-/programming/compiler/lecture/계산기/Debug/*.pdb
-/programming/compiler/lecture/계산기/Debug
-/programming/compiler/lecture/계산기/.vs/example02/v14/*.suo
-/programming/compiler/lecture/idl/test/test_cplus/ipch/TEST_CPLUS-40526fa1/*.ipch
-/programming/compiler/lecture/idl/.vs/b2c/v15/*.db
-/programming/compiler/lecture/idl/.vs/b2c/v15/ipch/*.ipch
-/programming/compiler/lecture/idl/ipch/B2C-c97ea717/*.ipch
-/programming/compiler/lecture/idl/temp
-/programming/compiler/lecture/계산기/.vs/example02/v15/ipch/AutoPCH/a63f422ca9e60d2a/*.ipch
-/programming/compiler/lecture/idl/bin/*.ilk
-/programming/compiler/lecture/idl/*.db
-/programming/compiler/lecture/idl/bin/*.pdb
-/programming/compiler/lecture/계산기/.vs/example02/v15/ipch/AutoPCH/e9f34a33e55ce14b
-/programming/compiler/lecture/계산기/x64/Debug
+*.ilk
+temp
+*.obj
+logs
+
