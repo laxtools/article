@@ -30,6 +30,18 @@ C++ 쉽게 잘 연동되는 언어가 필요하다. 성능이 중요할 수도 �
   - java에 의존한다. 
   - https://ferret-lang.org/
   - c, c++ FFI 
+- cling 
+  - c++ interpreter with c++ code 
+  - 이 길이 가장 적합 
+- behavior
+  - boolean expression with c++ functions 
+  - behavior tree
+  - signal (message)
+  - how to interpret it? 
+    - reflection
+  - 여전히 cling이 가장 매력적이다
+
+
 
 chaiscript 또는 이와 유사한 언어로 transpiler 작성을 한다.  ferret을 선택할 수도 있다.  clojure 파서부터 구현?? 
 

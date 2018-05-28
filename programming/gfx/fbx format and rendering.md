@@ -24,12 +24,7 @@ http://docs.autodesk.com/FBX/2014/ENU/FBX-SDK-Documentation/index.html
   - skeletal debug 
   - shader 
 
-
-
-
 DX의 sdkmesh 변환 도구를 참조하면 기본적인 흐름은 이해할 수 있다. 렌더링은 매시와 애니메이션이 시작이고 라이트와 재질이 끝이다. 
-
-
 
 ## Adding Material  
 
@@ -54,6 +49,9 @@ shader를 선택하고 파라미터 값들을 지정하여 다양한 효과를 �
 - Unity의 FBX 지원 영상 
   - 메뉴를 연동해서 자동으로 갱신 처리 
   - http://bbs.ruliweb.com/news/read/99898
+
+- C# SDK wrapper 
+  - https://github.com/ArcaneDreams/ArcManagedFbx
 
 
 
