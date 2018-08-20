@@ -12,10 +12,6 @@
 
 
 
-
-
-
-
 # 아이디어 
 
 object, actor, component를 한 축으로 한다. object_pool, object_container, scene, spatial_scene을 한 축으로 한다. 게임을 만들지 않고도 미리 테스트 가능하도록 한다.  
@@ -45,7 +41,29 @@ https://github.com/rttrorg/rttr
 
 
 
+## Entity / Component System 
 
+http://google.github.io/corgi/corgi_guide_introduction.html
+
+FPL 프로젝트에서 개발한 엔티티 / 컴포넌트 시스템이다.  Update 위주로 실행하므로 클라이언트 용이다.  서버에 적합한 오브젝트 / 컴포넌트 시스템을 만들어야 한다.  
+
+
+
+https://github.com/alecthomas/entityx
+
+type-safe, fast 라고 얘기하는 라이브러리. 라이센스 보고 참고하여 새로 하나 만든다. 
+
+
+
+https://github.com/Yelnats321/EntityPlus
+
+enityx의 성공에 자극받은 c++ 14로 개발하고 더 빠르다고 주장하는 구현이다. 안전하게 컴포넌트를 사용할 수 있다면 어떤 거라도 괜찮다.  새로 구현해야 하는 것은 맞고 이벤트 전파도 같이 포함해야 한다. 
+
+
+
+https://github.com/redxdev/ECS
+
+또 다른 Entity / Component 시스템이다.  공부할 내용들이 좀 있다. 이 쪽은 미리 봐야 한다. 
 
 
 
