@@ -736,7 +736,7 @@ SSMS 대신 빠르게 뭔가를 해볼 때 좋다.  SSMS 설치가 없더라도 
 
 
 
-# 6장. 필수적인 Transact-SQL 문 
+# 6장. 필수로 알아야 하는 Transact-SQL 문 
 
 
 
@@ -774,6 +774,990 @@ Inner Join이 일반적으로 DB 대수에 정의된 조인이다. outer join은
 
 
 ## SQL 프로그래밍 
+
+Stored Procedure Programming이다.  2005 버전의 기능이긴 하나 게임에서 매우 복잡한 SP 사용은 좋지 않으므로 기본 기능을 충분히 잘 이해하는 걸 목표로 진행한다. 
+
+
+
+### 마음 바꾸기 
+
+DB와 SP를 데이터 관리 환경에서 데이터 프로그래밍 환경으로 넓혀서 생각한다.  SP를 DB 쿼리를 위한 언어에서 일반 프로그래밍 언어로 확장한다.  관점의 전환을 통한 전체적인 시야의 확장은 모든 일에 중요하다. 
+
+```sql
+SELECT 'Hello DB'
+```
+
+예시의 하나로 SELECT 문을 테이블과 연결된 데이터 조회 구문에서 데이터를 가져오는 일반 구문으로 생각한다. 
+
+```sql 
+DECLARE @Name VARCHAR(30)
+SELECT @Name = 'Hello Variable' 
+SELECT @Name
+
+SET @Name = 'Hello2'
+SELECT @Name
+```
+
+변수도 프로그래밍 언어의 변수처럼 생각한다.  
+
+여기에 IF, WHILE 등의 구문과 expression이 있으면 원하는 작업들을 대부분 처리할 수 있다. 
+
+```sql 
+DECLARE @i1 int 
+DECLARE @i2 int 
+
+SET @i1 = 3
+SET @i2 = 5 
+
+PRINT 3 * 5
+PRINT 3 / 5
+
+DECLARE @f1 float
+DECLARE @f2 float 
+
+SET @f1 = 3.5
+SET @f2 = 0.001
+
+PRINT @f1 / @f2 
+
+SET @i1 = 0 
+
+WHILE @i1 < 5 
+BEGIN 
+  PRINT @i1 
+  SET @i1 = @i1 + 1
+END 
+
+
+```
+
+위 정도를 프로그래밍 할 수 있으면 대부분 프로그래밍 할 수 있다.  SQL이라는 강력한 데이터 관리 도구가 있으므로 더욱 그렇다.
+
+
+
+### IF ELSE
+
+```sql 
+IF @Name = 'Hello' 
+	BEGIN 
+		PRINT '@Name is Hello'
+	END
+ELSE 
+	BEGIN 
+		PRINT '@Name is not Hello'
+	END
+```
+
+PRINT 문은 "메세지" 창에 출력되고, 쿼리 내용은 결과에 출력된다. 
+
+SQL bool 표현식은 일반 프로그래밍 언어, 논리적인 차원에서 가장 자연스러운 것들로 이루어진다. 타잎별 불 표현식을 이해하고 있으면 IF 문의 조건 등에 사용할 수 있다. 
+
+중요한 타잎별 함수들을 알아야 한다. 이를 풍부하게 알면 작성이 쉬워진다. 
+
+
+
+### CASE 
+
+switch 문과 같다. 
+
+```sql 
+CASE 
+	WHEN bool expr THEN expr
+	WHEN bool expr THEN expr
+	...
+	ELSE expr
+```
+
+THEN 문이 값인 expression인가, 아니면 문장인 statement인가는 중요하다. CASE는 expression으로 SELECT 문에 사용할 수 있다. IF는 statement로 사용할 수 없다. 
+
+
+
+
+
+### WHILE 
+
+```sql 
+WHILE bool expr 
+BEGIN 
+END
+```
+
+BREAK, CONSTINUE, RETURN과 함께 사용할 수 있다. 의미는 다른 언어와 같다. Statement이다. 
+
+
+
+### GOTO 
+
+그 goto.  
+
+
+
+### TRY, CATCH 
+
+그 try, catch
+
+DB 처리에서 유용한 부분들이 있다. 에러 처리 스킴을 어떻게 할 지에 따라 사용 여부를 결정해야 한다.  DB 쿼리의 에러 처리는 중요한 주제이다.  별도로 정리해야 한다 (이 책은 11장에서 다룬다).
+
+
+
+# 7장. 데이터베이스 생성과 관리 
+
+
+
+## 데이터베이스 기본구조와 시스템 테이터베이스
+
+
+
+### 데이터와 로그 파일 
+
+8KByte 페이지와 8개의 페이지로 구성된 extent로 분할하여 데이터 파일을 관리한다. 
+
+로그 파일은 LSN (로그 시퀀스 번호)와 트랜잭션 ID, 트랜잭션 정보를 기록한다. 
+
+로그 파일은 DB 복구에 사용한다.  (복제 등 다른 많은 용도로 사용한다. )
+
+
+
+### 트랜잭션 
+
+Auto commit은 각 쿼리 문 단위로 트랜잭션화 하여 처리하는 방법으로 기본 동작 모드이다. BEGIN TRANSACTION, COMMIT / ROLLBACK 단위로 명시적으로 묶어 주어야 범위 생성이 가능하다. 
+
+실험을 통해 확인하는 과정이 있다. 좋은 아이디어이자 무엇인가를 이해하는 좋은 방법이다. 이렇게 개념이 아닌 현실 속에서 파악하는 방법, 이해가 아닌 연습을 통한 훈련이 반드시 필요하다. 
+
+- 쿼리 한 줄씩 실행 
+- 테이블 상태 조회 
+- 크래시 발생 시키기 (강제 종료) 
+- 복구 확인 
+
+
+
+### 시스템 데이터베이스 
+
+- master
+- model 
+- msdb
+  - 백업 / 복제 등 예약 작업 
+- tempdb 
+  - 시스템, 사용자 임시 테이블 
+- 복제 
+  - publication 
+  - distribution 
+  - subscription 
+
+
+
+## 데이터베이스 생성 및 관리 
+
+
+
+### SSMS 이용 
+
+- DB 이름 
+- 논리적 이름 
+- 파일 유형 
+- 파일 그룹 
+- 처음 크기 
+- 증분 크기 
+- 경로 
+- 파일이름 
+
+
+
+### T-SQL로 생성 
+
+ODBC에서 쿼리로 만들 수 있는 지 나중에 확인한다.  가능하다면 단위 테스트 구성에 좋다. 
+
+
+
+### 파일 그룹
+
+IO 성능 향상을 위해 물리적인 파일들을 분산. 
+
+
+
+### 파일 줄이기 
+
+- DBCC SHRINKDATABASE
+- DBCC SHRINKFILE
+
+
+
+### 데이터베이스 수정 
+
+- ALTER DATABASE
+
+예전에 오라클 명령어로 봤던 기억이.... 
+
+
+
+### 데이터 파일 늘리기 
+
+AKTER DATABASE [db] MODIFY FILE ( ... )
+
+
+
+### 데이터베이스 이름 바꾸기 
+
+- ALTER DATABASE [db] SET SINGLE_USER
+- ALTER DATABASE [db] MODIFY NAME = [name]
+- ALTER DATABASE [db] SET MULTI_USER
+
+위는 논리적인 이름 변경이다. 
+
+sp_helpdb와 같은 많은 sp 들이 있다. 이들을 잘 알면 도움이 많이 된다. 프로그래머에게는 약간 과도한 지식인 듯 하다. 
+
+
+
+## 데이터베이스 옵션
+
+자동 축소, 멀티 유저 / 싱글 유저 등의 기본 옵션들이다. 
+
+
+
+# 8장. 테이블과 뷰
+
+13장 트리거까지 테이블, 인덱스, 트랜잭션, 커서 등 쿼리 처리 관련한 중요 개념들과 사용법에 대해 설명한다. 익숙한 듯 익숙하지 않은 것들을 돌아보면서 확실하게 정리한다. 
+
+
+
+## 테이블 
+
+
+
+### 테이블 만들기 
+
+T-SQL이 매우 편하다. 
+
+`EXEC sp_help TblMember` 
+
+관리 sp 중 하나인 sp_help는 다양한 오브젝트를 대상으로 실행된다. 테이블 속성을 한번에 볼 때 좋다. 
+
+
+
+### 제약 조건 
+
+```sql
+ALTER TABLE [table] 
+ADD CONSTRAINT [name] PRIMARY KEY( column1, ... )
+```
+
+
+
+FOREIGN KEY, UNIQUE, CHECK 
+
+
+
+### DEFAULT 정의 
+
+```sql
+ALTER TABLE [table] 
+ADD CONTRAINT [name] DEFAULT [value] FOR [column]
+```
+
+위와 같이 DEFAULT도 제약 조건 중 하나로 지정할 수 있다. 
+
+
+
+### 임시 테이블 
+
+\#을 붙이면 로컬 임시 테이블, \##이면 전역 임시 테이블이다.  게임용 DB에서는 안 쓰는 게 좋다.  
+
+
+
+### 테이블 삭제 
+
+DROP TABLE [name] 
+
+외래키의 경우 참조가 있을 경우 지울 수 없다. 
+
+
+
+### 테이블 수정 
+
+컬럼 이름등 다양하게 ALTER TABLE로 변경 가능하다. 
+
+
+
+### 데이터베이스 개체의 이름과 외부 서버에 있는 개체로의 접근 
+
+
+
+#### 데이터베이스 개체 
+
+서버이름.데이터베이스이름.스키마이름.개체이름 
+
+```sql 
+SELECT * FROM BRAIN.tableDB.dbo.userTbl
+```
+
+기본 스키마 이름이 dbo이다.  오브젝트 생성시 스키마 이름을 주면 해당 스키마에 오브젝트가 생성된다. 
+
+
+
+#### 외부 서버에 있는 개체로의 접근 
+
+```sql 
+EXEC sp_addlinkedserver 
+	@server = 'SECOND',  -- 사용할 이름 
+    @srvproduct = 'SQLServer', 
+    @provider='SQLNCLI', 
+    @datasrc='BRAIN\SECOND'  --- 접속할 인스턴스 
+```
+
+위와 같이 서버 연결을 하나 만들고 SQL로 접근 가능하다. 
+
+```SQL 
+SELECT * FROM SECOND.tableDB2.dbo.userTbl2
+```
+
+
+
+## 뷰 
+
+게임 개발 시 필요할까? 꼭 필요한 부분은 없다. 
+
+
+
+## 분할 테이블과 분할 뷰
+
+
+
+### 분할 테이블
+
+- 파티션 함수를 정의 
+- 파티션 구성표를 정의 
+- 테이블 정의 시에 파티션 구성표를 적용
+- 테이터 입력 
+
+
+
+먼저 DB를 만들 때, 파일 그룹을 만들어 둔다. 꼭 필요한 지는 모르겠다.  하나의 파일에 넣더라도 파티션 자체로 이득이 있을 듯 하다. 
+
+```SQL
+CREATE PARTITION FUNCTION [functionName] (args) 
+AS RANGE LEFT FOR VALUES ( 1975, 1981)
+```
+
+아래에 파티션 함수를 RANGE로 만드는 방법에 대한 설명이 있다. 모든 데이터를 다 사용하지 않아도 된다. 
+
+https://docs.microsoft.com/ko-kr/sql/t-sql/statements/create-partition-function-transact-sql?view=sql-server-2017
+
+Computed Column을 사용할 수 있다면 거의 모든 수식을 사용할 수 있다. 확인이 필요하다. 
+
+https://docs.microsoft.com/ko-kr/sql/relational-databases/tables/specify-computed-columns-in-a-table?view=sql-server-2017
+
+
+
+#### 확인. Partition function on Computed Column 
+
+```SQL 
+CREATE TABLE dbo.Products   
+(  
+    ProductID int IDENTITY (1,1) NOT NULL  
+  , QtyAvailable smallint  
+  , UnitPrice money  
+  , PartitionID AS ProductID % 5
+);  
+```
+
+https://www.sqlshack.com/database-table-partitioning-sql-server/
+
+Sql Server 2016 버전부터 모든 버전에서 지원한다.  성능 관련 개선 기능은 엔터프라이즈 버전에서만 사용 가능하다는 얘기가 있는데 확인해야 한다. 
+
+- https://social.msdn.microsoft.com/Forums/sqlserver/en-US/07984e8c-aa46-45e4-ab34-c5fbe1e2a9f9/table-partitioning-in-sql-2016-standard-edition?forum=sqldatabaseengine
+- Partitioned Table Parallelism not supported in Standard Edition 
+  - 하지만, 여전히 성능 개선이 있다. 
+  - 인덱스와 파일 분리로도 상당할 수 있다. 
+
+
+
+# 9장. 인덱스 
+
+트랜잭션 이해와 함께 가장 중요한 장이다.  커서는 사용하지 않는다. 트리거는 특수한 경우 사용을 고려해 볼 수 있다.  이제 인덱스, 트랜잭션, 스토어드 프러시져, 백업과 복구, 레플리케이션/미러링 남았다. 
+
+
+
+## 인덱스 개요와 활용 
+
+### 인덱스의 종류 
+
+클러스터형과 비클러스터형이 있다. 클러스터 형은 사전과 같이 인덱스로 데이터가 정렬된 인덱스이다.  따라서, 클러스터형 인덱스는 테이블 당 하나만 있다. 물리적인 정렬도 같이 일어나므로 성능 영향이 있을 수 있다. 게임은 오브젝트 키 단위로 접근이 주로 발생하고 일정 범위를 검색하는 일이 적다. 따라서, 클러스터 인덱스의 데이터 정렬 기능이 필요하지 않을 수 있다. 
+
+https://www.mssqltips.com/sqlservertip/3041/when-sql-server-nonclustered-indexes-are-faster-than-clustered-indexes/
+
+- key 값의 range scan은 클러스터 인덱스가 빠르다. 
+- key 값 조회나 count(*) 같은 조회는 nonclustered가 더 빠르다. 
+
+게임은 nonclustered 를 기본으로 하는 것이 괜찮아 보이나 더 살핀 후 확정해야 한다. 
+
+
+
+### 인덱스의 내부 작동 
+
+B 트리를 기준으로 설명한다. 리프와 중간 노드의 분할이 일어난다. 더 자세한 내용은 좀 더 전문적인 문서를 참조해야 한다. 
+
+http://pages.di.unipi.it/ghelli/bd2/DBMS-Internals.pdf 의 5장. Dynamic Tree-Structure Organizations에서 상세하게 다룬다. 
+
+클러스터형은 데이터 페이지를 정렬하여 리프 노드로 바로 사용한다. 비클러스터형은 페이지와 데이터를 가리키는 포인터를 사용한다.  데이터 위치 포인터는 RID (Row ID)라고 한다. 
+
+비클러스터와 클러스터 인덱스가 함께 있을 경우 비클러스터 인덱스는 클러스터 인덱스에 대한 참조를 갖고 검색하게 된다. 이는 클러스터 인덱스 변경 시 데이터 페이지 번호 변경으로 RID가 바뀌게 되어 비클러스터 인덱스의 전체 재구성이 일어나기 때문이다. 
+
+
+
+### 인덱스 생성, 변경, 삭제 
+
+CREATE, ALTER, DROP으로 처리. 옵션들이 있으나 게임 개발에서 실질적으로 중요하지는 않아 보인다.  긴급하게 대처해야 할 경우 필요할 수도 있다. 
+
+- 생성 
+  - ONLINE : 인덱스 생성 중에도 테이블 접근 허용 
+  - SORT_IN_TEMPDB : 임시 DB에서 인덱스 생성을 위한 정렬 수행 
+- 변경 
+  - REORGANIZE : 인덱스 재구성만 한다. 
+
+
+
+`sp_helpindex` 로 인덱스 내용을 볼 수 있다. 
+
+
+
+범위 검색이 넓은 범위에 걸쳐 일어나면 비클러스터형 인덱스의 경우 사용하지 않을 수 있다. 범위 검색은 클러스터 인덱스가  매우 빠르다. 
+
+포괄열을 갖는 인덱스는 유용한 부분이 있겠으나 제약이 많아 실제 사용 가능한 지 모르곘다. 특수한 경우의 최적화로 사용 가능해 보인다. 
+
+
+
+### 테이터베이스 엔진 튜닝 관리자 
+
+자동화된 튜닝 기능은 의존하지 않는 게 좋다. 항상 확인하고 검증해서 사용해야 한다.  어떤 자동화가 있는 지 알면 튜닝에 참고하는 용도로 좋을 듯 하다. 
+
+
+
+## 분할 인덱스와 인덱싱된 뷰
+
+
+
+### 분할 인덱스 
+
+분할 테이블에 인덱스를 생성하면 자동으로 분할 인덱스가 된다. 
+
+```sql 
+SELECT * FROM userTbl 
+WHERE $PARTITION.birthYearRangePF(birthYear) = 1; 
+```
+
+위와 같이 파티션 함수를 통해 조회할 수 있다. 분할 테이블 지원 기능 중 하나이다. 
+
+분할 테이블의 경우 범위 스캔이나 여러 열 조회시 인덱스는 분할 인덱스이고 분할 파티션에 파일들이 있으므로 더 느릴 수 있다. 따라서, 키 단위로 단일 파티션에서 조회가 주로 일어날 경우에 유용하다. 
+
+
+
+### 인덱싱된 뷰
+
+뷰에 인덱스를 생성할 수 있다. 인덱스를 갖는 뷰를 인덱싱된 뷰라고 부른다. 
+
+
+
+
+
+# 10장. 트랜잭션과 잠금 
+
+
+
+## 트랜잭션 
+
+
+
+### 트랜잭션의 개념
+
+논리적 작업 단위. 
+
+- Atomicity  (원자성)
+- Consistency (일관성)
+- Isolation  (격리성)
+- Durability (영속성)
+
+그 ACID. 
+
+
+
+### 트랜잭션의 문법과 종류
+
+BEGIN TRAN[SACTION]
+
+... 
+
+COMMIT | ROLLBACK TRAN[SACTION] 
+
+
+
+종류 
+
+- Autocommit Transaction 
+  - 쿼리마다 자동으로 트랜잭션화
+- Explicit Transaction 
+  - BEGIN TRAN으로 명시적으로 시작 
+- Implicit Transaction  
+  - 암시적 트랜잭션
+  - 오라클 호환 모드 
+  - 권장하지 않음 
+
+
+
+### 트랜잭션 트래킹 
+
+Trigger와 @@trancount를 사용한 트랜잭션 트래킹 에제가 있다. 
+
+```sql
+SELECT @@trancount
+```
+
+위 명령으로 현재 트랜잭션 개수를 볼 수 있다. 
+
+
+
+`SAVE TRAN [name]` 으로 롤백 지점을 지정할 수 있다. `ROLLBACK TRAN [name]` 으로 해당 지점까지의 작업만 롤백 한다.  
+
+
+
+## 잠금 
+
+잠금은 데이터베이스의 일관성을 유지하기 위해 필요하다.  일관성은 데이터 모델에서 나온 논리적인 의미를 유지하기 위한 방법이다. 트랜잭션의 분리 실행으로 유지한다. 
+
+
+
+### 트랜잭션 격리 수준
+
+- READ UNCOMMITTED 
+- READ COMMITTED 
+- REPEATABLE READ 
+- SNAPSHOT 
+- SERIALIZABLE
+
+격리 수준이 많은 이유는 데이터 모델과 의미에 따라 일관성을 요구하는 수준과 방식이 달라지기 때문이다. DBMS에서 모든 것을 결정하기 않고 사용자가 선택할 수 있도록 하는 수단이다. 
+
+`SET TRNASACTION ISOLATION LEVEL`로 지정한다. 
+
+
+
+여러 사용자가 동시에 하나의 데이터에 접근할 때 발생되는 문제는 다음과 같다. 
+
+- Dirty Read (커밋되지 않은 데이터 읽기)
+- Unrepeatable Read (반복되지 않은 읽기)
+- Phantom Read (팬텀읽기, 가상 릭기)
+
+
+
+#### 더티 리드 
+
+더티 페이지는 메모리(데이터 캐시)에서는 변경되었지만 디스크에는 반영되지 않은 데이터(페이지)를 말한다. 더티 리드는 이런 더티 페이지를 읽는 것을 말한다. 
+
+READ UNCOMMITTED는 이 더티 리드를 허용한다. 
+
+```sql 
+DBCC USEROPTIONS 
+
+textsize	2147483647
+language	한국어
+dateformat	ymd
+datefirst	7
+lock_timeout	-1
+quoted_identifier	SET
+arithabort	SET
+ansi_null_dflt_on	SET
+ansi_warnings	SET
+ansi_padding	SET
+ansi_nulls	SET
+concat_null_yields_null	SET
+isolation level	read committed
+```
+
+위의 명령어로 현재 세션의 격리 수준을 확인할 수 있다. 
+
+게임은 오브젝트 단위로 한번에 하나의 트랜잭션만 진행되는 경우가 상당히 많다. 이를 전제로 두고 READ UNCOMMITTED로 격리 수준을 둘 수 있다. 
+
+
+
+#### Unrepatable Read 
+
+반복되지 않은 읽기란 트랜잭션 내에서 한번 읽은 데이터가 트랜잭션이 끝나기 전에 변경되었다면, 다시 읽었ㅇ르 경우에 새로운 값이 읽어지는 것을 말한다. 
+
+실습에서 다음을 설명한다. 
+
+- READ COMMITTED는 더티 리드를 막아준다. 
+- READ COMMITTED 만으로는 Unrepatable Read를 막을 수 없다. 
+
+**SESSION 1:** 
+
+```sql 
+BEGIN TRAN 
+ SELECT * FROM isoTbl; 
+```
+
+**SESSION 2:** 
+
+```sql 
+BEGIN TRAN 
+  UPDATE isoTbl SET money = money - 500 WHERE name = 'AAA';
+  UPDATE isoTbl SET money = money + 500 WHERE name = 'BBB';
+COMMIT TRAN  
+```
+
+**SESSION 1:** 
+
+```sql 
+  SELECT * from isoTbl; 
+COMMIT TRAN  
+```
+
+SELECT에 의해 공유 잠금이 걸린 경우에도 다른 사용자의 "읽기" 접근을 막아야 하는 경우가 있다. 이런 경우 REPEATABLE READ로 격리수준을 올린다.  REPEATABLE READ란 트랜잭션 진행 중 동일 데이터에 대한 반복 읽기는 트랜잭션 내의 변경이 없다면 동일한 값을 계속 읽는다는 뜻이다.  
+
+트랜잭션의 대상이 되는 행들에 대해 읽기도 막는 효고가 있다. 정확한 구현은 DBMS 내부 알고리즘들을 더 살펴야 한다. 
+
+
+
+#### Phantom Read 
+
+REPEATBLE READ는 공유잠금을 설정한다.  가상 읽기는 새로운 데이터의 입력도 막는다.  이를 SERIALIZABLE 또는 SNAPSHOT 격리 수준에서 지원한다. 
+
+잠금의 대상이 중요하다. 테이블인가?  
+
+
+
+### 잠금이 걸리는 리소스와 잠금의 종류
+
+
+
+#### 잠금이 걸리는 리소스 
+
+- RID 
+- KEY 
+- PAGE 
+- EXTENT 
+- HOBT 
+- TABLE 
+- FILE
+- APPLICATION
+- METADATA
+- ALLOCATION UNIT 
+- DATABASE
+
+
+
+#### 잠금 모드 
+
+- Shared Lock 
+- Exclusive Lock 
+- Update Lock 
+- Intent Lock 
+  - 잠금 계층 구조를 만드는 데 사용된다. (의미?)
+  - 의도 공유 (IS), 의도 배타 (IX), 의도 배타 공유 (ISX) 
+- Schema Lock 
+  - 스키마 수정 (Sch-M)과 스키마 안정성(Sch-S) 잠금이 있다. 
+- 대량 업데이트 잠금 
+- 키 범위 잠금 
+  - SERIALIZABLE 격리 수준을 사용할 때, 쿼리가 읽는 행 범위를 보호한다. 
+
+
+
+잠금 리소스와 잠금 모드의 동작은 DBMS 별로 세밀한 부분에서는 차이가 많을 것으로 보인다. 
+
+
+
+### 잠금의 정보 확인과 힌트 
+
+이 책의 가장 큰 장점은 실습을 통해 개념을 확인하는 과정에 있다. 
+
+sys.dm_tran_locks에서 정보를 가져오면서 어떤 잠금들이 생기는 지를 설명한다.  격리 수준에 따라 락들이 다양하게 발생한다. 
+
+
+
+### 블로킹과 교착상태 
+
+
+
+#### 블로킹
+
+락에 따라 다른 트랜잭션의 오브젝트 접근을 막는다. 타임아웃을 설정할 수 있다. 
+
+`SELECT @@lock_timeout`으로 현재 설정을 조회한다. `SET LOCK_TIMEOUT 15000`으로 설정한다. 값은 밀리초이다. 
+
+#### 데드락 
+
+트랜잭션의 실행 순서에 관계가 있다. 잠금이 발생하는 모든 자원에서 생길 수 있다. 
+
+SQL 서버 프로파일러에서 확인 가능하다. 
+
+
+
+## 분산 트랜잭션 
+
+생략. 
+
+
+
+# 11장. 저장 프로시저와 사용자 정의 함수 
+
+
+
+## 저장 프로시저
+
+- CREATE / ALTER  / DROP
+- EXECUTE [@retval = ] 이름 값1, 값2, ..., 값N [OUTPUT] 
+  - @retval은 선언되어야 하고 리턴 값이 있을 경우만 동작 
+  - ODBC는 ? = proc ( ?, ?, ... ) 로 하고 binding해서 사용
+- 파라미터의 기본값을 SP 정의 시 지정 가능 
+  - @birthday INT = 1900,  
+- TRY / CATCH 사용성 확인 
+  - 좋은 습관일 지, 아닐 지
+
+
+
+### 시스템 저장 프러시저 
+
+- sp_databases, sp_tables 
+- sp_who, sp_helptext, sp_lock
+- ......
+
+
+
+## 저장 프로시저의 작동 
+
+
+
+### WITH RECOMPILE 옵션과 저장 프러시져의 문제 
+
+컴파일 시 최적화를 하므로 변경된 데이터에 대해 최적화가 이루어지지 않을 수 있다.  몇 가지 방법으로 해결한다. 
+
+- DBCC FREEPROCCACHE 
+  - SP 캐시 지우기 
+  - 가장 간단해 보여 하나만 적음 
+
+
+
+
+
+## 사용자 정의 함수 
+
+SELECT 문 등에서 간단한 유틸리티로 사용할 수 있다. 지금까지 사용해 본 적은 없다. SQL 서버의 VM 성능이 충분할까?  되도록 부담을 줄이는 게 나을 수도 있다. 
+
+
+
+# 12장 커서, 13장 트리거 
+
+게임 서버에서 커서는 사용하지 않아야 한다.  운영 DB 등에는 사용할 수도 있다. 
+
+트리거는 특수한 경우만 사용한다. 편하기는 하나 관리가 잘 안 되면 위험할 수 있다. 
+
+
+
+
+
+# 17장. 데이터의 고가용성 (로그 전달, 데이터베이스 미러링, 복제)
+
+
+
+## 고가용성을 위한 방법 및 개념
+
+
+
+### 서버 클러스터링 개요 
+
+클러스터링은 엔터프라이즈 이상에서 지원한다. 하드웨어 지원이 필요하고 구성이 복잡하다. 게임에서 사용하기에는 크다. 
+
+
+
+### 로그 전달 개요 
+
+보조 서버로 트랜잭션 로그를 전달하여 반영하고 수작업으로 서비스를 복구 가능하게 한다. 
+
+
+
+### 데이터베이스 미러링 개요 
+
+주서버, 미러 서버, 모니터 서버로 구성된다. 복제하다가 주서버에 문제가 있으면 전환한다. 
+
+
+
+### 복제 개요 
+
+주서버 (게시 서버), 전달 서버(배포서버), 구독 서버로 구성된다. 복제도 트랜잭션 로그 기반으로 동작한다.  서비스를 여러 곳에서 동일한 데이터에 대해 접근 가능하다. 활용도가 높아 보인다. 
+
+
+
+## 로그 전달 
+
+
+
+### 작동 방식 
+
+- 주 서버의 로그 백업 파일 (*.TRN)이 주서버의 지정된 폴더에 일정한 주기 (기본 15분) 로 백업된다. 
+- 일정한 주기마다 백업 로그 파일이 보조 서버의 지정된 폴더로 전달된다. 
+- 보조 서버로 복사된 트랜잭션 로그가 복제 DB에 반영된다. 
+
+
+
+### 설정 
+
+꽤 많다. 유실 간격이 길기 때문에 실제 사용할 일은 없어 보인다.  
+
+
+
+## 미러링 
+
+
+
+### 개요 
+
+- 원본 DB에서 작업한다. 
+- 작업 내용은 복제 DB로 실시간 전달된다. 
+- 원본 DB가 장애가 발생하면 자동 전환 기능은 프로그램에서 구현해야 한다. 
+  - 다른 방법은 없는가? 장애 확인은 어떻게 하지? 
+
+
+
+자동 전환 문제를 해결해야 하는데, 이 문제가 미러링 자체에서 해결되지 않은 건 클러스터링의 하위 기능으로 미러링이 사용되기 때문으로 보인다.  분산 시스템의 장애 탐지 및 전환 (failover) 알고리즘을 프로그램 상에서 구현해야 한다. 
+
+
+
+### 실습 
+
+여러 가지 세부 사항이 있다.  실제 사용할 때 보면 된다. 용도가 있는가?
+
+
+
+## 복제 
+
+
+
+### 복제의 방법 
+
+- 스냅숏
+- 트랜잭션 
+- 병합 복제 
+  - 구독 서버의 변경 사항이 게시 서버로 전달된다. 
+  - 즉시 또는 지연 병합 
+
+
+
+###복제의 구성 
+
+- P2P 
+- 중앙 게시자 모델
+- 중앙 구독자 모델 
+
+게임에서는 백업과 운영을 위해 중앙 게시자 모델을 사용할 수 있다.  
+
+
+
+
+
+### 실습 
+
+양이 가장 많다.  
+
+
+
+## 서비스의 데이터 보호 방법에 관해 
+
+DBMS의 전체 백업은 정기적인 유지 보수가 있어야 가능한데 모바일 게임들은 점점 더 점검 시간을 갖기 어려워지고 있다. 이런 환경에서 데이터를 보호를 위한 가장 적절한 방법이 복제로 보인다. 
+
+서비스 DB와 가까운 곳에 (동일 IDC) 복제 DB를 구성하고 원본 DB에서 구독자로 백업을 받는다.  여기에 증분 백업 등을 설정하여 정기적인 백업을 함꼐 받도록 구성한다. 서비스 DB 만큼 좋은 장비일 필요는 없으나 IO 성능은 비슷한 정도라야 한다. 
+
+다른 방법들도 있을 수 있으나 조건에 따라 달라질 것이다. 복제를 중요한 수단으로 활용해야 한다는 점은 명확하다. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
