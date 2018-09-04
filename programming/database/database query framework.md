@@ -29,9 +29,49 @@ C++에서 SqlServer Native Client 인터페이스를 사용하여 편하고 안�
 
 
 
+## 쿼리 기능 
+
+- transaction 지정 
+- stored procedure / sql query
+- binding of input / output parameters
+- row fetch into result message
+
+
+
+### Binding / Fetch 
+
+- Input / output binding from / to struct fields
+- Fetch to struct fields 
+
+
+
+struct를 기준으로 처리해야 유연하다.  (더 적은 의존이 된다) 
+
+
+
 # 구현 
 
 
+
+## PoC 
+
+- nanodbc 
+- Binding / Fetch 코드를 생성된 것처럼 만들고 진행 
+- 언어를 추출
+- 다시 언어의 개선과 생성 고려 
+- 위의 반복 
+
+
+
+여기도 디버깅, 예외 처리를 가장 중요하게 생각한다. 보고 싶으면 진행 과정을 볼 수 있게 한다. 
+
+
+
+
+
+
+
+# 조사 
 
 ## 연습 
 
@@ -94,18 +134,6 @@ SQL Server 공부를 별도로 진행한다.
 
 
 T-SQL (Transact SQL)에 익숙해질 필요가 있다.  개발하다 보면 자연스럽게 그렇게 될 것이다. 먼저, 캐릭터, 아이템, 스킬, 메일, 길드의 Object Relational 구조에 대해 정리한다. 
-
-
-
-### Object Relational Model 
-
-
-
-
-
-
-
-
 
 
 
