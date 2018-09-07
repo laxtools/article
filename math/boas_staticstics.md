@@ -1,10 +1,10 @@
 # [Boas] Probability and Statistics 
 
-Notes and Solutions to exercises. 
+Notes and Solutions to selected problems. Trying all problems takes really long time. 
 
 
 
-# Introduction 
+# 1. Introduction 
 
 
 
@@ -201,6 +201,284 @@ m(E) = 9 - m(R)
 m(E) = 9 - 4 = 5
 
 p(E) = 5/9 
+
+
+
+### 4 
+
+- A single card drawn at random from a shuffled deck. 
+- the probability of red card? 
+- the probability of the ace of hearts? 
+- the probability of either a three or a five? 
+- the probability of an ace or red or both? 
+
+
+
+#### the probability of red card? 
+
+**facts:** 
+
+- poker cards are 52. 
+- spade : black 
+- heart : red
+- club : black 
+- diamond : red 
+- 2 ~ 10, J, Q, K, A
+
+
+
+**solution 1:** 
+
+m(U) = 52 when drawing a card. 
+
+m(E) = 13 * 2 = 26 
+
+p(E) = 1/2 
+
+
+
+**solution 2:** 
+
+m(U) = 2 in terms of color  (red / black)
+
+m(E) = 1 
+
+p(E) = 1/2
+
+
+
+How to formalize the above arguments? 
+
+
+
+#### the probability of the ace of hearts? 
+
+m(E) = 1 
+
+p(E) = 1/52
+
+
+
+#### the probability of either a three or a five? 
+
+$m(E) = m(E_1) + m(E_2)$, where $E_1$ : three drawn, $E_2$ : five drawn. and $E_1 \cap E_2$ is empty. 
+
+m(E) = 4 + 4 
+
+p(E) = 8 / 52 = 4 / 13 = 0.3076
+
+
+
+#### the probability of an ace or red or both? 
+
+m(Ace) = 4
+
+m(Red) = 26 
+
+m(Both) = 2
+
+m(E = Ace or Red or Both) = m(Ace) + m(Red) - m(Both) = 28 since Ace and Red are counted "Both times" more. 
+
+p(E) = 28/52 = 7/13
+
+
+
+#### poker quiz 
+
+lots more complex calculations are in poker game. 
+
+add my own problems when proper. 
+
+
+
+### 9
+
+- trying to find instrument A in a laboratory 
+- someone put both A and B into identical boxes mixed at random on a shelf
+- lab has 3 A's and 7 B's. 
+- the probability that you get an A from a box? 
+- the probability that you get an A from a box after taking out B from a box 
+
+
+
+#### the probability that you get an A from a box? 
+
+**clear:** 
+
+- only A and B are in boxes. 
+- 10 instruments are all. 
+
+
+
+**solution:** 
+
+m(U) = 10 
+
+m(E) = 3
+
+p(E) = 3/10 
+
+
+
+#### the probability that you get an A from a box after taking out B from a box 
+
+m(U) = 9 
+
+m(E) = 3 
+
+p(E) = 3/9 = 1/3
+
+
+
+# 2. Sample Space
+
+a set of all possible mutually exclusive outcomes is a sample space. 
+
+- uniform / non-uniform sample space
+
+
+
+**Probability:** 
+
+- sample space
+- probabilities associated with the points (elements of the space) 
+- probability = sum of the probability of points in the event
+  - event is a subset of the sample space
+
+샘플 공간은 확률의 합이 1인 서로 소인 집합들로 나눠지면 된다. 
+
+
+
+## Problems 
+
+### 11
+
+- nonuniform sample spaces for three tosses 
+
+**solution:** 
+
+ttt, tth, tht, thh, htt, hth, hht, hhh
+
+we can split this set into mutually exclusive ones. 
+
+{ ttt }, {tth, tht, thh, htt, hth, hht, hhh}
+
+what is the rule of this sample space? 
+
+### 14
+
+- two dice are thrown. 
+- a) the probability of forming a two-digit number greater than 33? 
+- b) the probability of forming a two-digit number greaer than or equal to 42? 
+- c) can you find a two-digit number (or numbers) s.t. the probability of being able to form a larger number is the same as the probability of being able to form a smaller number? 
+
+Following the note, the order of numbers does not matter to form a two-digit number. We can change the sample space reflecting this fact. 
+
+s(a, b) = { a:b, b:a}. For example, s(1, 2) = { 1:2, 2:1 }
+
+Then, the sample space is: 
+
+s(1, 1), s(1, 2), s(1, 3), s(1, 4), s(1, 5), s(1, 6), 
+
+s(2, 2), s(2, 3), s(2, 4), s(2, 5), s(2, 6) 
+
+s(3, 3), s(3, 4), s(3, 5), s(3, 6)
+
+s(4, 4), s(4, 5), s(4, 6)
+
+s(5, 5), s(5, 6)
+
+s(6, 6)
+
+#### the probability of forming a two-digit number greater than 33? 
+
+Two form a number great that 33
+
+ten digit can be { 3, 4, 5, 6} 
+
+unit digit can be for each ten digit: 
+
+unit( 3 ) = { 4, 5, 6}
+
+unit( 4 ) = { 1, 2, 3, 4, 5, 6 } = unit( 5 ) = unit( 6 )
+
+The changed sample space does not help since the probabilities are all different. uniform sample space is easier to calculate by counting in this example (discrete case?). 
+
+Since the order can be reversed, the set is extended. 
+
+E(uint(3)) = { 3:4, 3:5, 3:6, 4:3, 5:3, 6: 3 }
+
+E(uint(4)) = { 4:1, 4:2, 4:3, 4:4, 4:5, 4:6, 1:4, 2:4, 3:4, 5:4, 6:4 }
+
+E(uint(5)) = { 5:1, 5:2, 5:3, 5:4, 5:5, 5:6, 1:5, 2:5, 3:5, 4:5, 6:5 }
+
+E(uint(6)) = { 6:1, 6:2, 6:3, 6:4, 6:5, 6:6, 1:6, 2:6, 3:6, 4:6, 5:6 }
+
+$\cup$ E = { 3:4, 3:5, 3:6, 4:3, 5:3, 6:3 }
+
+$\cup$ { 4:1, 4:2, 4:4, 4:5, 4:6, 1:4, 2:4, 5:4, 6:4 }
+
+$\cup$  { 5:1, 5:2, 5:5, 5:6, 1:5, 2:5, 6:5 }
+
+$\cup$  { 6:1, 6:2, 6:6, 1:6, 2:6 }
+
+m(E) = 6 + 9 + 7 + 5 = 27 
+
+p(E) = 27 / 36 = 3/4
+
+Is it easier to calculate $E^c$ ? Since the set is smaller, it would be eaiser. 
+
+Is there a algebraic formula to calculate the probability in general? 
+
+
+
+#### the probability of forming a two-digit number greaer than or equal to 42? 
+
+unit(4) = { 2, 3, 4, 5, 6 }
+
+uint(5) = { 1, 2, ..., 6 }
+
+uint(6) = { 1, 2, .., 6}
+
+E(uint(4)) = { 4:2, 4:3, 4:4, 4:5, 4:6, 2:4, 3:4, 5:4, 6:4}
+
+E(uint(5)) = { 5:1, 5:2, 5:3, 5:4, 5:5, 5:6, 1:5, 2:5, 3:5, 4:5, 6:5 }
+
+E(uint(6)) = { 6:1, 6:2, 6:3, 6:4, 6:5, 6:6, 1:6, 2:6, 3:6, 4:6, 5:6 }
+
+$\cup$ E = { 4:2, 4:3, 4:4, 4:5, 4:6, 2:4, 3:4, 5:4, 6:4}
+
+$\cup$ { 5:1, 5:2, 5:3, 5:5, 5:6, 1:5, 2:5, 3:5, 6:5 }
+
+$\cup$ { 6:1, 6:2, 6:3, 6:6, 1:6, 2:6, 3:6 }
+
+m(E) = 9 + 9 + 7 = 25 
+
+p(E) = 25 / 36 
+
+Constructing E with (2.4) is a lot simple. 
+
+
+
+#### c) 
+
+The number splits the sample space of (2.4) into two sets with equal numbers. 
+
+The order of digit does not matter, since we can change the position. For example, 
+
+2:4 is equal to 4:2. This means the number needs to cut (2.4) around diagonal. 
+
+Let's pic 51 as the number, then below two lines of 5:1 are in E. Then $m(E) \ge 12$ . We need to find 6 more elements, but are 7 more elements that are $\ge$ 51. 
+
+Let's pic 52 as the number, then below two lines of 5:2 are in E.  Then $m(E) \ge 11$. We need to find 7 more elements. 4:5, 4:6, 3:5, 3:6, 2:6, 1:6 are those elements. 
+
+Moving to 4:6 or ahead makes $m(E) \ge 13$ and there are always 6 more entries having 5 or 6. 
+
+Therefore, there is no number that splits the sample space into equal numbers. 
+
+
+
+
 
 
 
