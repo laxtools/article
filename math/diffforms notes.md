@@ -42,7 +42,7 @@ $Fdx + Gdy$가 $R^2$ 상의 $C^1$ 계수 (Coefficients)를 갖는 미분 형식�
 
 이는 $F = \frac{\partial f}{\partial x}$, $G = \frac{\partial f}{\partial y}$ 라고 하는 것과 동일하다. 
 
-따라서, $\frac{\partial F}{\partial y} = \frac{\partial^2 f}{\partial y \partial x} = \frac {\partial^2 f}{\partial x \partial y}= \frac{\partial G}{\partial y}$ 이다. 
+따라서, $\frac{\partial F}{\partial y} = \frac{\partial^2 f}{\partial y \partial x} = \frac {\partial^2 f}{\partial x \partial y}= \frac{\partial G}{\partial x}$ 이다. 
 
 여기서 f의 이계 편미분이 같으려면 $C^2$ 이어야 한다. (왜 그런가?)
 
@@ -52,7 +52,7 @@ $Fdx + Gdy$가 $R^2$ 상의 $C^1$ 계수 (Coefficients)를 갖는 미분 형식�
 
 $ydx$ 의 정확한 함수 f를 찾으려면 $\int y dx$ = $\frac{\partial f}{\partial x} = yx + C$ 여기서 $\frac{\partial f}{\partial y} = x$가 된다. 따라서, 만족하는 함수가 없다. 
 
-만약 $\frac{\partial F}{\partial y} =  \frac{\partial G}{\partial y}$ 이면 닫혀있다(closed)고 한다.  그래서, 정확하려면 닫혀있어야 한다. 
+만약 $\frac{\partial F}{\partial y} =  \frac{\partial G}{\partial x}$ 이면 닫혀있다(closed)고 한다.  그래서, 정확하려면 닫혀있어야 한다. 
 
 정확성은 매우 중요한 개념이다.  미분 방정식에서 이미 만난적이 있을 것이다. 방정식이 다음과 같이 주어지면, $\frac{dy}{dx} = \frac{F(x,y)}{G(x, y)}$ 다시 써서 $Fdx - Gdy$ = 0 으로 할 수 있다. 
 
@@ -128,11 +128,17 @@ $\omega = df$ 라면 $\int df$ = $f |^b_{a}$ 가 된다. 따라서, 중간의 �
 
 **노트**
 
-비약은 없으나 비약이 있다. $\omega$ 표시에 비약이 있는가? $\omega = Fdx + Gdy$ 라고 보면 비약은 없다. $df = \omega$ 일 때 $\int_{C_1} df = \int_{a}^{b} \frac{df}{dt}dt$ 을 열심히 생각해 봐야 한다. 여기가 핵심이다. 
+비약이 있다. $\omega$ 표시에 비약이 있는가? $\omega = Fdx + Gdy$ 라고 보면 비약은 없다. $df = \omega$ 일 때 $\int_{C_1} df = \int_{a}^{b} \frac{df}{dt}dt$ 을 열심히 생각해 봐야 한다. 여기가 핵심이다. 
+
+좀 더 생각해 보면 다음과 같이 따라갈 수 있다. 
+$$
+df = Fdx + Gdy 
+\\
+\int df = \int \frac{df}{dt}dt = \int (F\frac{dx}{dt} + G\frac{dy}{dt})dt
+$$
+위의 적분은 선적분 정의와 같다. x, y가 곡선을 따라 매개변수화 되므로 적분이 가능하다. 위는 스칼라 함수인데 나중에 벡터 함수도 다뤄야 한다. 
 
 
-
-더 보기 전에 연습이 필요하다. 
 
 ### Corollary 1.4.6 if $\omega$ is exact and C is closed, then $\int_C \omega$ = 0 
 
@@ -141,6 +147,72 @@ $\omega = df$ 라면 $\int df$ = $f |^b_{a}$ 가 된다. 따라서, 중간의 �
 
 
 ### Proof of Theorem 1.4.1 
+
+$Fdx + Gdy$가 $R^2$ 상의 닫힌 형식이다. $f(x,y) = \int_C Fdx + Gdy$ 이고 곡선이 (0, 0)에서 (x, 0) 다시 (x,y)로 이어지는 선분들로 이루어져 있다고 하자. 
+
+$f(x, y) = \int_{0}^{x} F(t, 0)dt + \int_{0}^{y}G(x, t)dt$
+
+이 때, $df = Fdx + Gdy$임을 보이려고 한다. 
+
+Fundamental theorem of calculus로 미분을 하면 
+
+$\frac{\partial f}{\partial y} = \frac{\partial}{\partial y} \int_{0}^{y} G(x, t)dt$ = $G(x, y)$ 이다. 
+
+**note:**
+
+위에서 G의 primitive가 GG라고 하면 $\int G(x, t)dt = GG |^{y}_{0}$ = GG(x, y) - GG(x, 0)가 된다. 이를 다시 y에 대해 편미분하면 G(x, y)가 된다. 
+
+구체적인 예를 들어서 계산해도 괜찮다. $G(x, y) = x^2 + y^3$ 이라고 하면 더 명확하다. Boas 책으로 연습을 많이 하는 게 좋다. 
+
+$\frac{\partial f}{\partial x}$ 를 계산하는 부분에서 closed 성질을 이용한다. $R^2$ 전체에서 닫힌 성질은 곡선을 작업하기 편하게 선분으로 선택하는 과정에서 사용되었다.  이와 같은 작업이 가능한 오픈 집합이면 동일한 증명이 가능한데 예외적인 경우도 있다. 이를 확정하기 위한 방법이 de Rham cohomology이다. 
+
+증명에서 $df = Fdx + Gdy$ 형태의 f가 있다는 걸 증명했는데 그 f(x, y) 가 $\int_C Fdx + Gdy$ 임에 주목해야 한다. 아직 잘 모르겠지만 dxdy 또는 dxdydz 와 같은 것, 벡터에 대해서도 미분 형식을 사용하는 것 등도 이 쪽과 연관이 있어 보인다. 
+
+
+
+## Work 
+
+$\vec{d} = (dx, dy, dz)$ , $\vec{F} = (F_1, F_2, F_3)$ 
+
+돌을 들어올리는 간단한 경우로 보면, 다음과 같이 일을 계산할 수 있다. 
+
+$\vec{F} \cdot \vec{d} = -(F_1 dx + F_2dy + F_3dz)$ 
+
+위의 값을 벡터 필드 상의 곡선에 따라 적분할 수 있어 보인다. 
+
+$$ -\int_C F_1dx + F_2dy + F_3dz$$
+
+위의 식은 $-\int_C \vec{F} \cdot \vec{d}$ 와 같이 나타낼 수도 있다. 여기서 $\vec{d}$는 매개변수가 되는 곡선에서 변위 벡터가 된다. 따라서 $\vec{d} = \vec{dC}$ 이고 매개변수화 한 형태에서 연쇄 법칙을 사용하여 $\vec{d}C = \frac{\vec{d}C}{dt}dt$ 가 된다. $\vec{F}$도 C의 함수로 보면 $\vec{F} = \vec{F}(C)$ 이다. 
+
+좀 더 접근해 가고 있다. 계산 연습이 필요하다. 구체적인 공간 상의 구체적인 함수 형태로 만들어서 계산할 수 있어야 한다. 
+
+
+
+## Green's theorem for a rectangle 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
