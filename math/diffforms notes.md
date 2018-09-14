@@ -186,9 +186,154 @@ $$ -\int_C F_1dx + F_2dy + F_3dz$$
 
 좀 더 접근해 가고 있다. 계산 연습이 필요하다. 구체적인 공간 상의 구체적인 함수 형태로 만들어서 계산할 수 있어야 한다. 
 
+위를 벡터처럼 적는 방법으로 $-\int_C \vec{F} \cdot d\vec{s}$ 를 사용한다. 
+
 
 
 ## Green's theorem for a rectangle 
+
+$R$을 (0, 0), (0, a), (a, b), (0, b)로 둘러싸인 사각형이라고 하자.  $C$를 이 사각형을 둘러싸는 반시계 방향 경계 곡선으로 둔다. $C^1$ 인 함수 $P(x, y), Q(x,y)$ 가 사각형 R에 주어질 때, 미적분 기본 정리에서 다음 결과가 나온다. 
+$$
+\int\int_D\frac{\partial Q}{\partial x}dxdy = \int_a^b[Q(a, y) - Q(0, y)]dy = \int_CQ(x, y)dy
+$$
+다변수 함수의 미적분 계산에 좀 더 익숙해질 필요가 있다. 
+
+- Fubini 정리의 증명 이해 
+- Jacobian으로 변수 변환 이해 
+  - 다변수 체인룰? 
+
+그리고 $\int_C Pdx + Qdy$ 가 $\int_a^b [P(x(t), y(t))\frac{dx}{dt} + Q(x(t), y(t))\frac{dy}{dt} ]dt $ 임을 기억한다. 마법은 없고 정의와 논리만 있을 뿐이다. 
+
+
+
+## Exercise Set 1
+
+
+
+
+
+
+
+
+
+# 2-forms
+
+
+
+## Wedge product
+
+$\vec{u}, \vec{v} \in \mathbb{R}^n$, define the matrix $\vec{u} \wedge \vec{v} = \frac{1}{2} (\vec{u}^T\vec{v} - \vec{v}^T\vec{u})$ 
+
+여기서 가장 중요한 건 웨지곱이 행렬이라는 점이다. 계산을 하면 skew symmetric 행렬이 된다. $\vec{u} \wedge \vec{v} = -\vec{v} \wedge \vec{u}$ 가 된다. $\wedge^2 \mathbb{R}^2$는 skew symmetric 행렬 집합이다. 웨지곱은 이 집합의 원소이다. 
+
+이는 일반적으로 다음에서 알 수 있다. 
+$$
+(\vec{u}^T\vec{v} - \vec{v}^T\vec{u})^T = 
+(\vec{v}^T)\vec{u}^{TT} - \vec{u}^T\vec{v}^{TT}
+\\
+= \vec{v}^T \vec{u} - \vec{u}^T\vec{v} 
+\\
+= -2(\vec{v}\wedge\vec{u})
+$$
+정의에서 바로 계산하기 보다 계산 규칙을 만들면 편하다. 
+$$
+v \wedge u = - u \wedge v
+\\
+u \wedge u = 0 
+\\
+c(u \wedge v) = (cu) \wedge v = u \wedge (cv)
+\\
+u\wedge v + u \wedge w = u \wedge ( v + w) 
+$$
+
+
+### Theorem 2.1.2 $u \wedge v$는 u와 v로 생성된 (span) 평행다면체의 면적을 결정한다. 
+
+벡터곱의 성질인데 지금 바로 증명하지는 않고 개념을 추가해 나가면서 필요한 시점에 증명한다. 
+
+벡터공간 V가 있을 때, 2-vector의 벡터 공간을 만들 수 있다. 
+$$
+\wedge^2V = \{ \sum_iu_i \wedge v_i | u_i, v_i \in V\}
+$$
+재미있다. 원래 벡터공간과 같은 필드 (실수나 복소수)를 사용한다. 바로 이해되지 않을 때는 계산이 도움이 된다. $\mathbb{R}^n$ 의 2-벡터 공간을 표준 기저로 살펴본다. 
+$$
+\vec{a} = (a_1, a_2, ..., a_n) = a_1e_1 + a_2e_2 + ... + a_ne_n
+\\
+$$
+위와 같이 놓고 $\wedge^2V$ 의 임의의 2-벡터가 어떻게 표현될 지를 계산한다. **연습!!!**
+
+
+
+## 2-forms 
+
+2-form은 1-form의 웨지곱을 갖는 식이다. $\mathbb{R}^3$에서는 다음과 같다. 
+
+$ F dx \wedge dy + G dy \wedge dz + H dz \wedge dx$ 
+
+예제 계산을 다음과 같이 한다. 
+
+$(3dx + dy) \wedge (e^x dx + 2dy) = ? $ 
+
+A 2-from will be an expression that can be integrated over a surface in the same way that a 1-form can be integrated over a curve. 
+
+1-form이 주어졌을 때 미분 형식을 만들기 위해 $d\omega$ 를 정의한다. 
+$$
+d(\alpha + \beta) = d\alpha + d\beta 
+\\
+d(f\alpha) = df \wedge \alpha + f \wedge d\alpha 
+\\
+d(dx) = d(dy) = d(dz) = 0
+$$
+위에서 f는 함수이고 $\alpha, \beta$는 1-form이다. 
+
+$df = f_x dx + f_y dy + f_z dz$  (여기서 $f_x$는 x에 대한 편미분)
+
+$d(Fdx + Gdy + Hdz) = d(Fdx) + d(Gdy) + d(Hdz) = $
+
+$dF \wedge dx + F \wedge d(dx) + ... $ 
+
+$d(dx) = 0$ 
+
+$dF \wedge dx = (F_xdx + F_ydy + F_zdz) \wedge dx = $
+
+$ F_ydy \wedge dx + F_z dz \wedge dx$ 
+
+G, H도 비슷하게 계산하여 결과가 다음과 같다. 
+
+$(G_x - F_y)dx \wedge dy + (H_y - G_z)dy \wedge dz + (F_z - H_x) dz \wedge dx$ 
+
+벡터에서 웨지로 오가는 형태로 보면 위는 벡터 필드의 Curl 과 같다. 
+
+
+
+## Exactness in $\mathbb{R}^3$ and conservation of energy 
+
+ $C^1$ 1-form $\omega = Fdx + Gdy + Hdz$가  $C^2$ 함수 f가 $\omega = df$일 경우, 정확하다고 한다. 
+
+$dw = 0$이면 닫혀있다고 하고 $G_x = F_y, H_y = G_z, F_z = H_x$를 만족해야 한다. 
+
+
+
+Theorem 2.3.2는 매우 중요해 보인다. 계산을 해보는 게 좋겠다. 간단한 곡선들로 정확한 함수들을 찾는다. 
+
+ if $f(x0; y0; z0) = \int_C \omega$, where C is any
+piecewise C1 curve connecting (0; 0; 0) to (x0; y0; z0), then $df = \omega$
+
+위는 df의 정의는 아니지만 정의처럼 생각할 수도 있다. 지금까지 df의 실제 의미를 준 경우가 없어서 더욱 그렇다. 
+
+
+
+## Derivative of a 2-form and divergence
+
+3-vector로 확장한다. $u \wedge v \wedge w$ . 3-vector는 2-vector의 웨지곱이 아니고 다른 오브젝트로 볼륨을 나타낸다. 
+
+같은 벡터가 있으면 0, 순서가 바뀌면 -, 배분 법칙이 성립한다. 
+
+2-vector는 행렬로 계산했는데 3-vector에 대한 행렬 표현은 없다. 
+
+
+
+
 
 
 
