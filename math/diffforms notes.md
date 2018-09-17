@@ -335,7 +335,202 @@ piecewise C1 curve connecting (0; 0; 0) to (x0; y0; z0), then $df = \omega$
 
 
 
+# Differential Forms (MIT OpencourseWare)
 
+좀 더 철저하게 이론적인 접근을 통해 이해할 필요가 생긴다. 직관적인 접근은 고등학교 때부터 나오지만 (역함수의 미분 계산) 정확한 정의와 연습을 통해 이해할 필요가 있다. 물론 간결하게 60 페이지 안에서 요약한 노트도 중요하다. 
+
+
+
+# Multilinear Algebra
+
+대수적으로 가장 정확하게 텐서와 형식을 정의할 수 있다. 추상적이지만 함수로 정의되고 그 안에서 집합 간의 구조를 발견한다. 
+
+
+
+## 배경
+
+정의와 정리를 살핀다. 
+
+### 정의. 벡터 공간 
+
+원소가 벡터이고 체의 원소로 더하기 결합을 할 수 있다. 체와 벡터 간에는 곱과 체와 벡터 간 곱하기에 대해 더하기의 배분 법칙이 성립한다. 벡터는 더하기에 대해 가환군이다. 
+
+- 더하기 
+- 스칼라 곱하기
+
+이미 익숙하다고 가정한다. 연습 문제 1.1.i을 푼다.
+
+(1) 영 벡터 
+
+(2) 선형 독립 (또는 1차 독립) 
+
+A set of vectors, $v_1, ..., v_k \in V$ is lineary independent if the map 
+
+$ \mathbb{R}^k \rightarrow V, (c_1, ..., c_k) = c_1v_1 + ... + c_kv_k$ is injective. 
+
+위의 함수가 injective (단사함수)이면 항상 다른 벡터가 된다. 공간과 함수를 하나 추가하여 개념을 정리하는 좋은 예이다. 이 함수는 $v_1, ..., v_k$가 고정된 상태의 함수이다. 
+
+(3) $v_1, ..., v_k$ 가 span (생성) 하는공간은 (2)의 함수가 surjective 한 공간을 뜻한다. 전사함수란 뜻은 임의의 벡터 $w \in V$에 대해 $ w = c_1v_1 + ... + c_kv_k$인 $c_1, ..., c_k$가 있다는 뜻이다. 즉, $v_1, ..., v_k$의 선형 결합으로 w를 만들 수 있다.
+
+(4) $v_1, ..., v_k$가 $V$의 기저 (basis)이면 일차독립이고 생성(span)한다. 즉, (2)의 함수가 bijective이다. 
+
+(5) 차원
+
+(6) 부분공간 
+
+$U \subset V, v_1, v_2 \in U$, $\lambda \in \mathbb{R}$, $\lambda v$ and $v_1 + v_2$ are in $U$ 
+
+(7) $A: V \rightarrow W$ is linear if $A(\lambda v) = \lambda A(v)$ and $A(v_1 + v_2) = A(v_1) + A(v_2)$ 
+
+(8) $ker(A) = \{ v \in V : A(v) = 0 \}$
+
+(9) im(A) is a subspace of W
+
+dim(V) = dim(ker(A)) + dim(im(A))
+
+**연습문제 :** 위를 증명하라
+
+(10) 선형 변환은 행렬로 표시 가능하다.
+
+**연습문제:** 위를 증명하라
+
+(11) 내적 
+
+- bilinearity 
+- symmetry 
+- positivity 
+
+
+
+## Quotient spaces and dual spaces
+
+V ; a vector space, W; a subspace of V.   A W-coset is : 
+$$
+v + W = \{ v + w | w \in W \}
+$$
+If $v_1 - v_2 \in W$, then $v_1 + W = v_2 + W$ 
+
+If $v_1 - v_2 \notin W$, then $v_1 + W \ne v_2 + W $ 
+
+
+
+V/W := the set of distince W-cosets in V
+
+### Definition 1.2.3 quotient space
+
+$$
+(v_1 + W) + (v_2 + W) = (v_1 + v_2) + W
+\\
+\lambda(v + W) = (\lambda v) + W
+$$
+
+위의 연산을 정의하면 V/W를 벡터 공간으로 만든다.
+
+
+
+### Definition 1.2.4 quotient map
+
+V; a vector space, W $\subset$ V; a subspace. 
+$$
+\pi : V \rightarrow V/W
+\\
+\pi(v) = v + W
+$$
+
+
+위가 몫 함수이다. 
+
+
+
+### Proposition (Exercise) 
+
+$A : V \rightarrow U$; a linear map of vector spaces. If $W \subset ker(A)$, then there exists a unique linear map $A^\# : V/W \rightarrow U$ s.t. $A=A^\# \circ \pi$, where $\pi : V \rightarrow V/W$ is a quotient map. 
+
+
+
+###Definition 1.2.10 dual space
+
+V; a vector space. $V^*$; the set of all linear functions $l : V \rightarrow R$ 
+
+Define a vector space structure on V* as follows: if $l_1, l_2 \in V^*$, define sum $l_1 + l_2$ as $(l_1 + l_2)(v) = l_1(v) + l_2(v)$ 
+
+If $l \in V^*$ is a linear function and $\lambda \in R$, define $\lambda l $ by $(\lambda l)(v) = \lambda l(v)$ 
+
+V* is a dual space of V. 
+
+
+
+쌍대 공간은 V 에서 R로의 선형 함수의 공간이다.  
+
+### V*의 기저
+
+특정 기저의 계수를 추출하는 함수 $e_i^*(v) = c_i $는 V에서 R로의 선형함수로 V\*에 속한다. 이는 $V^*$의 기저가 된다. 
+
+
+
+### Definition 1.2.14 transpose of the map A
+
+A: V -> W에서 A* : W* -> V*를 만든다.  
+
+
+
+## 연습문제 
+
+여기 연습문제는 모두 해결하고 가야 한다. 꽤 정의가 어려워졌다. 
+
+
+
+
+
+### 연습문제
+
+
+
+#### i. $\mathbb{R}^n$에서 정의된 좌표값 기반의 벡터 연산에 대해 벡터 공간인지 확인한다. 
+
+(1) v+w = w+v, where v, w $\in \mathbb{R}^n$
+$$
+v=(v_1, v_2, ..., v_n), w=(w_1, w_2, ..., w_n)
+\\
+v+w = (v_1 + w_1, v_2 + w_2, ..., v_n + w_n)
+\\
+= (w_1 + v_1, w_2 + v_2, ..., w_n + v_n) 
+\\
+= w+v
+$$
+
+
+(2) u + (v + w) = (u + v) + w
+
+(3) $\vec{0} = (0, ..., 0)$, then v + 0 = 0 + v
+
+(4) v + (-1)v = 0 
+
+v + (-1) v = 1 v + (-1)v = (1 + -1) v = 0 v = $\vec{0}$
+
+간단한 계산으로 점검할 수 있다. 계산은 확인과 발전에 중요하다. 
+
+
+
+## 텐서
+
+### Defintion 1.3.1 linear in its $i^{th}$ variable
+
+V; an n-dimensional vector space. $V^k$; the set of all k-tuples $(v_1, ..., v_k)$ where $v_i \in V$. A function $T : V^k \rightarrow R$ is linear in its $i^{th}$ variable if, when we fix vectors, $v_1, ..., v_{i-1}, v_{i+1}, ..., v_k$, the map $V \rightarrow R$ defined by $ v = T(v_1, ..., v_{i-1}, v, v_{i+1}, ..., v_k)$ is linear. 
+
+k-tensor는 $1,...,k$의 변수들에 대해 선형일 경우이다. k-tensor 집합을 $L^k(V)$라고 표시한다. 이 집합은 벡터 공간이다. 
+
+### Definition 1.3.3 Multi-index of n of length k
+
+$I=(i_1, ..., i_k)$ where $1 \le i_r \le n$ 인 인덱스 I를 말한다.
+
+배열 인덱스와 같다. 
+
+
+
+### Proposition 1.3.7 The real numbers $T_I$ determine T, i.e., if $T$ and $T^\prime$ are k-tensors and $T_I = T^\prime_I$ for all I , then $T = T^\prime$ 
+
+여기서 $T_I = T(e_{i_1}, ..., e_{i_k})$ 로 $e_1, ..., e_n$이 V의 기저일 때 R 값으로 주어진다. T는 $V^k$에서 R로의 함수이다. 
 
 
 

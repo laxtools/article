@@ -468,13 +468,137 @@ The order of digit does not matter, since we can change the position. For exampl
 
 2:4 is equal to 4:2. This means the number needs to cut (2.4) around diagonal. 
 
-Let's pic 51 as the number, then below two lines of 5:1 are in E. Then $m(E) \ge 12$ . We need to find 6 more elements, but are 7 more elements that are $\ge$ 51. 
+Let's pick 51 as the number, then below two lines of 5:1 are in E. Then $m(E) \ge 12$ . We need to find 6 more elements, but are 7 more elements that are $\ge$ 51. 
 
-Let's pic 52 as the number, then below two lines of 5:2 are in E.  Then $m(E) \ge 11$. We need to find 7 more elements. 4:5, 4:6, 3:5, 3:6, 2:6, 1:6 are those elements. 
+Let's pick 52 as the number, then below two lines from 5:2 are in E.  Then $m(E) \ge 11$. We need to find 7 more elements. 4:5, 4:6, 3:5, 3:6, 2:5, 2:6, 1:6 are those elements. If larger includes the same number, 52 is that number.
 
-Moving to 4:6 or ahead makes $m(E) \ge 13$ and there are always 6 more entries having 5 or 6. 
 
-Therefore, there is no number that splits the sample space into equal numbers. 
+
+#### Finding a sample space
+
+The process is tedious. There must be a clear sample space for each solutions. 
+
+Instead of looking at sample space, we can think about domain, the number. 
+
+domain is a set of (Toss1, Toss2). 
+
+range is a set of numbers with Max(Toss1, Toss2) Min( Toss1, Toss2): 
+
+C1  C2  C3 C4 C5 C6
+
+11  21  31 41 51 61
+
+​      22  32 42 52 62
+
+​            33 43 53 63 
+
+​                 44 54 64
+
+​                       55 65
+
+​                             66
+
+$ f : \{(t1, t2)\} \rightarrow N$, where N is the above numbers. 
+
+The inverse image is a set of tosses that maps to the number. For example, 
+
+$f^{-1}(\{21\}) = \{ (1, 2), (2, 1) \}$
+
+C1, ..., C6 are column sets. C1 = {11}, C2={21, 22}, and so on.
+
+$|f^{-1}(C6)| = 11$, and $|f^{-1}(C5) = 9|$ 
+
+If there is a splitting number, then it must be in C5. 
+
+Since the size of inverse image decreases by 2 when the number is increased by 1 up to 54, we can increase to 52. 
+
+$|f^{-1}(C5 - \{51\})| = 18$ 
+
+
+
+Above function constructs a sample space. 
+
+
+
+### 17
+
+- Two dice thrown
+- The first die is even
+- the number on the second is $\lt 4$
+
+
+
+#### Finding a sample space
+
+possible samples under the conditions:
+
+2:1, 2:2, 2:3
+
+4:1, 4:2, 4:3
+
+6:1, 6:2, 6:3
+
+
+
+#### a) possible sums and probabilities
+
+sums = { 3,       4,     5,      6,    7,     8,    9 }
+
+probs = { 1/9, 1/9, 2/9, 1/9, 2/9, 1/9, 1/9}
+
+
+
+#### b) the most probable sum
+
+5 and 7
+
+
+
+#### c) the probability that the sum is even
+
+p(4) + p(6) + p(8) = 1/3
+
+
+
+# 3. Probability Theorems
+
+$P(AB) = P(A) \cdot P_A(B) $ means $P(A \cap B) = P(A) \cdot P(B | A) $
+
+The proof uses uniform probability. 
+$$
+P(AB) = \frac{N(AB)}{N}
+\\
+P(A) = \frac{N(A)}{N}
+\\
+P_A(B) = \frac{N(AB)}{N(A)}
+$$
+The independence condition is $P(B) = P_A(B)$, which is 
+$$
+\frac{N(B)}{N} = \frac{N(AB)}{N(A)}
+$$
+This is surprising.
+
+When throwing two dice, the events A = first die is 3 and B = second die is 2 are known as independent. The calculation shows that the above ratio is same. (why??)
+
+This is a definition. Can it be constructed from other definitions? 
+
+The definition is saying that the probability of B does not change under its confinement into A if they are independent. 
+
+This seems to be related to the core concept of probability. It must be an advanced theory. But some more arguments can be made with uniform probability.
+
+First dice events $f_1, f_2, ..., f_6$ splits the space of the second dice events $s_1, s_2, ..., s_6$, meaning $m(f_1 \cap s_1) = m(f_2 \cap s_1) = ...$. This is one case. 
+
+
+
+Another property:
+$$
+P(A+B) = P(A) + P(B) - P(AB)
+$$
+
+
+
+
+
 
 
 
