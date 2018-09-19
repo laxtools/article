@@ -31,18 +31,6 @@ visual studio 2015용 솔루션을 갖고 있다. 여기 옵션을 일부 조정
 
 
 
-## Understanding 
-
-기초 가이드 문서가 잘 되어 있다. 이를 따라서 진행한다. 이후에는 개별 영역에 대한 깊이 있는 이해가 필요하다. 게임에 사용하는 shader와 그래픽 알고리즘들을 이해하는 것이 목표이다. 
-
-### Tutorials
-
-
-
-
-
-
-
 # Practice
 
 - Modern OpenGL을 잘 설명
@@ -52,17 +40,31 @@ visual studio 2015용 솔루션을 갖고 있다. 여기 옵션을 일부 조정
   - https://learnopengl.com/book/learnopengl_book_bw.pdf
   - 폰트가 별로라 온라인 버전이 낫다. 
 
-
-
 LearnOpenGL in Cinder로 코드를 변경한다.  처음 부분들은 Cinder Tutorials로 가볍게 넘어갈 수 있다. 
 
+**교재 : Fundamentals of Computer Graphics - Peter Shirley, Steve..** 
+
+- 4장 Ray Tracing 
+  - Fbx 로딩
+    - 매시 / 텍스처 / 애님 
+- 10장 Surface Shading
+- 11장 Texture Mapping 
+  - Bump Textures / Displacement Mapping 구현 
+- 12장 Octree 
+- 13장 More Ray Tracing 
+  - 알파 / 굴절 구현 
+- 15장 Curves 
+  - 3D math plot 
+    - 라이팅 적용되고 매시화가 잘 된 모델 
+    - 쉽게 볼 수 있도록 함
+- 16장 Animation 
+  - 물리 적용 
+- 17장 이후 
+  - 고급 기법으로 쉐이더들을 찾아서 구현 
 
 
 
-
-
-
-
+scratchpixel.com 에 C++ 코드를 포함하고 있다. 위 교재의 실제 적용 사례로 보기 좋다. 
 
 
 
