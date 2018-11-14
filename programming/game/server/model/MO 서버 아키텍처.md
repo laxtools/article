@@ -67,7 +67,190 @@ MO는 다음의 기능을 필요로 한다.
 
 ## 설계
 
-분산 시스템의 설계는 의미의 명시가 필요하다. 이는 각 노드의 상태 변화를 메세지(패킷)에 따른 변화로 혹인할 수 있다. 함수 호출에 따른 상태 변화와 다르지 않다. 단지, 서비스 상태나 연결 상태를 고려해야 한다는 점만 다르다. 이는 분산 처리의 근본 문제라 할 수 있다. 
+분산 시스템의 설계는 의미의 명시가 필요하다. 이는 각 노드의 상태 변화를 메세지(패킷)에 따른 변화로 확인할 수 있다. 함수 호출에 따른 상태 변화와 다르지 않다. 단지, 서비스 상태나 연결 상태를 고려해야 한다는 점만 다르다. 이는 분산 처리의 근본 문제라 할 수 있고 별도로 정리해 두었고 제일 아래 포함했다. 
+
+Lobby, Match, SceneMaster 세 가지 서비스가 연관된다. Lobby는 사용자 연결을 유지하고 매칭, 정보 조회, 상점 등의 기능을 제공한다. Match는 매칭 서비스이다. SceneMaster는 게임의 인스턴스인 Scene을 관리하는  서비스이다. 
+
+서비스 간의 피어 관계는 다음과 같다.
+
+- Lobby - Match
+- Match - SceneMaster
+
+Lobby가 SceneMaster를 알아야 하는가? 매칭만을 위해서는 필요 없어 보이므로 Scene 쪽 정리할 때 다시 본다. 
+
+프로토콜은 다음과 같다.
+
+- User.ReqMatch
+- Lobby.ReqMatch
+- Match.ReqCreateScene
+- SceneMaster.ResCreateScene
+  - SceneService.ReqCreate
+  - SceneService.ResCreate
+- Match.ResMatch
+- User.ResMatch
+
+
+
+Scene을 만들고 매칭응답을 보내는 이유는 인증을 위해서이다. 
+
+매칭 요청은 Lobby, Scene에서 올 수 있다. 
+
+Match는 도메인을 미리 설정해 두는 것이 확장성을 위해 좋다. 
+
+## 흐름
+
+- User.s(Lobby, ReqMatch)
+- Lobby.r(User, ReqMatch) > Lobby.d(ReqMatch) > Lobby.s(Match, ReqMatch)
+- Match.r(Lobby, ReqMatch) > Match.d(ReqMatch) > Match.s(SceneMaster, ReqCreateScene)
+- SceneMaster.r(Match, ReqCreateScene) > SceneMaster.d(ReqCreateScene) > SceneMaster.s(SceneService, ReqCreateScene)
+- SceneService.r(SceneMaster, ReqCreateScene) > SceneService.d(ReqCreateScene) > SceneService.s(SceneMaster, ResCreateScene)
+- SceneMaster.r(SceneService, ResCreateScene) > SceneMaster.d(ResCreateScene) > SceneMaster.s(Match, ResCreateScene)
+- Match.r(SceneMaster, ResCreateScene) > Match.d(ResCreateScene) > Match.s(Lobby, ResMatch) 
+- Lobby.r(Match, ResMatch) > Lobby.d(ResMatch) > Lobby.s(User, ResMatch)
+- User.r(Lobby, ResMatch) > User.d(ResMatch)
+
+이후 scene 진입 과정을 밟는다. 
+
+
+
+## 매칭 처리
+
+Match.d(ReqMatch) 처리 과정이 매칭 서비스의 핵심 기능이다. 게임마다 알고리즘은 약간 씩 다를 듯 하다. 내부 구현의 선택을 정리한다.
+
+매칭은 대상 풀이 커야 재밌게 함께 할 수 있는 사용자들을 모아줄 수 있다. 그리고 매칭은 서버 부담이 적은 작업이다. 따라서, 하나의 핸들러로 충분히 처리 가능하다. 핸들러들이 최상위 매칭 범위를 결정하는 도메인 하나씩을 맡아서 처리한다. 도메인은 게임 기획에 따라 결정한다. 
+
+### 페어 매칭
+
+두명을 매칭하는 경우가 가장 단순하다. ELO와 같은 점수 기반 매칭이 가장 많이 쓰이므로 이를 전제로 한다. 같은 사용자와 계속 매칭되면 재미가 덜 하므로 점수 범위 내 랜덤 매칭을 사용한다. 요청 순으로 해당 사용자 범위에 있는 사용자를 찾아준다. 
+
+#### 수치 범위 검색
+
+$(u_1, ..., u_n)$의 사용자들에서 대상 사용자 $u_t$가 갖는 수치 범위 내 사용자들을 찾는 문제이다. 
+
+**아이디어 1. 범위 리스트** 
+
+- $r_1$ : 0 ~ 100, $r_2$ : 101  ~ 200, ... 
+- 각 범위에 사용자들 배치 
+
+**아이디어 2. 정렬과 바이너리 서치**
+
+- list를 사용하여 정렬 상태 유지 
+  - 삽입할 때 위치를 찾아서 넣기 
+- 알고리즘을 직접 구현?
+  - STL로 가능한가?
+
+아이디어 2로 충분해 보인다. stl의 lower_bound, upper_bound 등을 사용하면 충분히 가능해 보인다. 성능을 확인하면서 구현하면 된다.  같은 값을 갖는 사용자들도 고려한다. 버그가 없어야 하고 정확해야 한다.
+
+lower_bound로 얻은 iterator로 삽입하면 정렬이 유지된다. lower_bound, upper_bound로 찾은 iterator 주변을 검색하면 사용자들을 추출할 수 있다.
+
+#### 조건 검색
+
+ELO와 같은 포인트 외에 조건이 추가될 수 있다. 조건은 대상 집합을 분리한다. 공간이 나뉘므로 매칭이 어려워진다. 조건 검색은 기획에서 많은 고려가 필요하다. 될 수 있으면 이렇게 기획하지 않는 것이 좋다. 그래도 한번 생각해 본다. 
+
+핑이 서로 좋은 사용자를 연결해주는 기능을 추가한다고 생각해보자. 사용자 간의 핑 값을 저장할 수는 없으므로 지역을 갖고 있다. 지역 간의 핑 값은 한벌만 갖고 있는다. <kr, us> 값을 인덱스로 두 사용자 간의 핑 값을 빠르게 검색할 수 있다. 
+
+먼저 ELO로 대상 사용자를 검색한다. 그 다음 핑 값이 일정 범위 안에 있는 사용자를 찾는다. 없으면 실패로 처리하고 대기 큐에 넣는다. 너무 오래 걸리지 않도록 ELO 범위 확장을 사용한다. 핑 범위 확장은 플레이 경험을 나쁘게 할 수 있다. 
+
+핑은 생각보다 단순한 조검 검색이다. 
+
+
+
+### 그룹 매칭
+
+여러 명의 사용자 간의 대전 게임은 그룹 매칭이 필요하다. 그룹 매칭은 쉬워 보이지 않는다. 몸 값이 비슷한 티믕ㄹ 구성하는 것처럼 ELO 합산 범위에 따라 다르게 할 수도 있고 역할에 따른 수치값으로 역할별로 뽑을 수도 있다. 
+
+팀 매칭은 더 어려운 과제로 보인다. 팀을 형성하면서 적절한 대전이 가능한 팀을 만들어야 하므로 깊게 생각해야 한다. 별도 주제로 다루기로 한다. 흥미로운 주제이다. 
+
+대부분의 게임은 단순한 그룹 매칭이 더 잘 동작하고 괜찮을 수 있다. 일정 수준이 되는 사용자들을 빠르게 묶어서 함께 플레이 할 수 있도록 하는 그룹을 묶는 작업은 팀 매칭보다는 간단하다. 또한 간단하게 구현하는 게 게임 개발 효율과 실질적인 플레이 경험에 더 좋을 수 있다. ELO와 같은 단계를 두고 단순한 정렬과 검색 기반의 페어 매칭과 유사한 기법이 충분해 보인다. 
+
+
+
+# scene (게임 인스턴스)
+
+게임 인스턴스를 씬으로 부르기로 했다. instance란 용어를 쓰면 필드, 채널 등과 혼선을 불러와 이를 포함하는 상위 개념으로 유니티에서 사용하는 게임 장면 단위를 차용한다. 
+
+scene은 생성과 소멸, 진입과 진출이 모든 게임에 공통적으로 필요한 처리이다.  게임 플레이는 게임마다 다르고 이는 게임으로 별도 프로토콜에 따라 구성해야 한다. 생성, 진입, 진출, 소멸도 게임마다 다른 부분들이 있어 일반화하기 어렵다. 특수성의 일반성이라고 할 수도 있는 공통적인 처리 부분들이 있으므로 하나의 방법으로 정리한다. 
+
+## 설계
+
+### 서비스들
+
+서비스 분산 구조에서 다음과 같은 서비스를 상정한다. 
+
+- scene_service
+  - scene의 생성과 실행
+  - scene 진입과 진출 
+  - scene의 소멸 
+  - scene으로 메세지 전달 
+- scene_master
+  - 도메인별 scene 전체 관리 
+  - match 서비스 등 다른 서비스와 처리 조율
+  - scene의 수명 관련 처리 담당
+    - 결정을 담당하는 유일한 권위
+- scene
+  - handler로 게임 플레이 패킷의 처리 
+  - 진출과 상태에 따른 소멸 의뢰 
+    - 반드시 scene_master에 결정을 받아 소멸 
+
+
+
+scene의 생명 주기 (life cycle)는 단일한 책임 원칙에 맞게 scene_master가 결정해야 한다. 분산 시스템에서 메세지 (이벤트)의 흐름은 파악하지 못 한 곳에서 발생할 수 있고 비동기로 흘러 시차가 발생한다. 이를 코드에서 모두 고려하기 어렵고 변경을 예상하기는 더욱 어렵다. 따라서, 한 곳에서 정확하게 상태를 처리하는 것이 매우 중요하다. 
+
+### 피어들
+
+서비스 간의 피어 관계는 다음과 같다. 
+
+- lobby - scene_master
+  - 검색 / 참관 등을 위해 필요할 때가 있다
+- scene_service - scene_master
+- scene_master - match 
+- scene_master - 다른 서비스들
+  - 이를 가정해야 더 확고해진다. 
+
+
+
+### 프로토콜
+
+이 쪽은 게임을 만들다 보면 예상치 못한 프로토콜이 추가될 가능성이 높다. 여기서는 전형적인 예상 흐름에 대해 정리한다. 
+
+- Match.s(SceneMaster, ReqCreateScene) 
+- SceneMaster.r(Match, ReqCreateScene) > SceneMaster.d(ReqCreateScene) > SceneMaster.s(SceneService, ReqCreateScene) 
+- SceneService.r(ReqCreateScene) > SceneService.d(ReqCreateScene) > Scene.d(ReqCreateScene) > Scene.s(SceneMaster, ResCreateScene) 
+- SceneMaster.r(ResCreateScene) > SceneMaster.d(ResCreateScene) > SceneMaster.s(Match, ResCreateScene) 
+- Match.r(SceneMaster, ResCreateScene) > Match.d(ResCreateScene) > Match.s(Lobby, ResMatch)
+- Lobby.r(Match, ResMatch) > Lobby.d(ResMatch) > Lobby.s(User, ResMatch)
+- User.r(Lobby, ResMatch) > User.d(ResMatch) > User.d(ConnectSceneService) > User.r(OnConnected) > User.s(SceneService, ReqJoinScene)
+- SceneService.r(ReqJoinService) > Scene.r(ReqJoinService) > Scene.d(ReqJoinService) > Scene.s(SceneMaster, SynUserJoined)
+  - Scene.s(User, ResJoinScene)
+- User.r(Scene, ResJoinScene) > User.d(ResJoinScene) 
+
+게임 진행의 시작은 Scene과 User간 통신으로 이루어진다. 
+
+
+
+### 소멸 과정
+
+- SceneMaster.s(SceneSerivce, ReqDestroyScene)
+- SceneService.r(SceneMaster, ReqDestroyScene) > SceneService.d(ReqDestroyScene) > SceneService.s(SceneMaster, ResDestroyScene) 
+- SceneMaster.r(SceneService, ResDestroyScene) > SceneMaster.d(ResDestroyScene)
+
+시작이 SeneMaster에서 되도록 프로토콜을 짜야 한다. 매칭으로 진입 중인 사용자가 있는 경우처럼 Scene 단위나 SceneService에서는 모르는 상황이 있을 수 있다. ReqAskDestroyScene과 같은 약간 작위적인 메세지가 있는 것처럼 생각하더라도 꼭 이렇게 해야 한다. 나중에 메세지들이 비동기로 흘러다니고 상태가 꼬이면 매우 민감한 버그들이 나올 수 있다. 
+
+중요하다. 
+
+### 차이를 다루기
+
+몇 가지 문제들을 생각해 본다. Scene은 여러 종류가 있다. 게임 종류도 다를 수 있다.  이들을 어떻게 다르게 관리할 것인가? 
+
+
+
+
+
+
+
+
+
+
 
 
 
